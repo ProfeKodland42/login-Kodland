@@ -1,0 +1,60 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #090d20, #131938, #090d20);
+}
+
+.tarjeta {
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+  padding: 48px 36px;
+  border-radius: 24px;
+  background: #1a2149;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 5px solid var(--course-primary, #4d6bff);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 30px;
+  margin-bottom: 22px;
+  font-size: 14px;
+  color: #ffffff;
+  background: var(--course-primary, #4d6bff);
+}
+
+.tarjeta h1 {
+  font-size: 34px;
+  margin-bottom: 12px;
+}
+
+.tarjeta p {
+  color: #b8bfd6;
+  line-height: 26px;
+  margin-bottom: 30px;
+}
+
+.tarjeta button {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 14px;
+  background: var(--course-primary, #4d6bff);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.tarjeta button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}

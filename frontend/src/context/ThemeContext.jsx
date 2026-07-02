@@ -5,7 +5,7 @@ const ThemeContext = createContext(null)
 const THEME_KEY = 'kodland_theme'
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => localStorage.getItem(THEME_KEY) || 'light')
+  const [theme, setTheme] = useState(() => localStorage.getItem(THEME_KEY) || 'dark')
   const [course, setCourse] = useState(null)
 
   useEffect(() => {

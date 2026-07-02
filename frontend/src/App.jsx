@@ -3,6 +3,7 @@ import { useAuth } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import CursoPlaceholder from './pages/CursoPlaceholder'
 
 function Inicio() {
   const { user } = useAuth()
@@ -20,6 +21,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/courses/:clave"
+          element={
+            <ProtectedRoute>
+              <CursoPlaceholder />
             </ProtectedRoute>
           }
         />

@@ -23,45 +23,85 @@ export default function Login() {
         setError(resultado.mensaje || 'No se pudo iniciar sesión')
       }
     } catch {
-      setError('Error de conexión con el servidor')
+      setError('Error en el servidor')
     } finally {
       setCargando(false)
     }
   }
 
   return (
-    <div className={styles.pantalla}>
-      <form className={styles.tarjeta} onSubmit={manejarEnvio}>
-        <h1 className={styles.titulo}>Kodland</h1>
+    <div className={styles.page}>
+      <div className={styles.left}>
+        <img src="/img/logo.png" className={styles.logo} alt="Kodland" />
 
-        <label className={styles.campo}>
-          <span>Usuario</span>
-          <input
-            type="text"
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-            autoComplete="username"
-            required
-          />
-        </label>
+        <div className={styles.slider}>
+          <img src="/img/laptop.png" className={styles.illustration} alt="" />
+          <h2>Programa en el navegador</h2>
+          <p>
+            ¡La plataforma online te permite crear un juego directamente en esta
+            ventana!
+          </p>
+          <div className={styles.dots}>
+            <span className={styles.active}></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
 
-        <label className={styles.campo}>
-          <span>Contraseña</span>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-            required
-          />
-        </label>
+      <div className={styles.right}>
+        <div className={styles.login}>
+          <h1>Hola Tutor!</h1>
 
-        {error && <p className={styles.error}>{error}</p>}
+          <form onSubmit={manejarEnvio}>
+            <input
+              type="text"
+              placeholder="Usuario"
+              value={usuario}
+              onChange={(e) => setUsuario(e.target.value)}
+              autoComplete="username"
+              required
+            />
+            <input
+              type="password"
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
+            />
 
-        <button type="submit" className={styles.boton} disabled={cargando}>
-          {cargando ? 'Entrando...' : 'Entrar'}
-        </button>
-      </form>
+            <a href="#" className={styles.forgot}>
+              ¿Olvidaste tu usuario o contraseña?
+            </a>
+
+            {error && <p className={styles.error}>{error}</p>}
+
+            <button type="submit" disabled={cargando}>
+              {cargando ? 'Entrando...' : 'Iniciar sesión'}
+            </button>
+          </form>
+
+          <div className={styles.separator}>
+            <span></span>
+            <p>o</p>
+            <span></span>
+          </div>
+
+          <p className={styles.socialText}>Inicia sesión con redes sociales</p>
+
+          <div className={styles.social}>
+            <i className="bi bi-google"></i>
+            <i className="bi bi-facebook"></i>
+            <i className="bi bi-github"></i>
+            <i className="bi bi-apple"></i>
+          </div>
+
+          <div className={styles.register}>
+            ¿No tienes una cuenta? <a href="#">Crear una cuenta</a>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
