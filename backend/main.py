@@ -61,30 +61,40 @@ def admin():
 
 @app.route("/ejecutar", methods=["POST"])
 def ejecutar():
-    datos = request.get_json()
+    datos = request.get_json() or {}
     codigo = datos.get("codigo", "")
     entrada = datos.get("entrada", "")
-    crear = requests.post(
-    "https://api.paiza.io/runners/create",
-    data={
-        "source_code": codigo,
-        "language": "python3",
-        "input": entrada,
-        "api_key": "guest"
-    }
-).json()
-    runner_id = crear["id"]
-    while True:
-        resultado = requests.get(
-            "https://api.paiza.io/runners/get_details",
-            params={
-                "id": runner_id,
+    try:
+        crear = requests.post(
+            "https://api.paiza.io/runners/create",
+            data={
+                "source_code": codigo,
+                "language": "python3",
+                "input": entrada,
                 "api_key": "guest"
-            }
+            },
+            timeout=15
         ).json()
-        if resultado["status"] == "completed":
-            break
-        time.sleep(0.5)
-    return jsonify(resultado)
+        runner_id = crear.get("id")
+        if not runner_id:
+            return jsonify({"stderr": "No se pudo iniciar la ejecución. Intenta de nuevo."})
+        inicio = time.time()
+        while True:
+            resultado = requests.get(
+                "https://api.paiza.io/runners/get_details",
+                params={
+                    "id": runner_id,
+                    "api_key": "guest"
+                },
+                timeout=15
+            ).json()
+            if resultado.get("status") == "completed":
+                break
+            if time.time() - inicio > 20:
+                return jsonify({"stderr": "La ejecución tardó demasiado. Intenta de nuevo."})
+            time.sleep(0.5)
+        return jsonify(resultado)
+    except requests.RequestException:
+        return jsonify({"stderr": "No se pudo conectar con el servicio de ejecución."})
 if __name__ == "__main__":
     app.run(debug=True)

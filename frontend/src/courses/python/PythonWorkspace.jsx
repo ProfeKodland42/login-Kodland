@@ -3,14 +3,21 @@ import { Link } from 'react-router-dom'
 import Editor from '@monaco-editor/react'
 import styles from './PythonWorkspace.module.css'
 
-const archivosIniciales = {
-  'main.py': `print("Bienvenido a Tutor's Leveling")
+const ejercicios = [
+  {
+    archivo: 'main.py',
+    titulo: 'Entrada y saludo',
+    codigo: `print("Bienvenido a Tutor's Leveling")
 
 nombre = input("¿Cómo te llamas? ")
 
 print("Hola", nombre)
 `,
-  'variables.py': `nombre = "Santiago"
+  },
+  {
+    archivo: 'variables.py',
+    titulo: 'Variables básicas',
+    codigo: `nombre = "Santiago"
 
 edad = 29
 
@@ -20,16 +27,25 @@ print(nombre)
 print(edad)
 print(pais)
 `,
-  'ejercicios.py': `print("Tabla del 5")
+  },
+  {
+    archivo: 'ejercicios.py',
+    titulo: 'Bucle: tabla del 5',
+    codigo: `print("Tabla del 5")
 
 for i in range(1, 11):
 
     print(f"5 x {i} = {5 * i}")
 `,
-}
+  },
+]
+
+const codigoInicial = Object.fromEntries(
+  ejercicios.map((e) => [e.archivo, e.codigo])
+)
 
 export default function PythonWorkspace() {
-  const [archivos, setArchivos] = useState(archivosIniciales)
+  const [archivos, setArchivos] = useState(codigoInicial)
   const [archivoActual, setArchivoActual] = useState('main.py')
   const [stdin, setStdin] = useState('')
   const [salida, setSalida] = useState('Esperando ejecución...')
@@ -52,42 +68,60 @@ export default function PythonWorkspace() {
       if (datos.build_result) texto += datos.build_result
       setSalida(texto.trim() === '' ? 'Proceso finalizado.' : texto)
     } catch {
-      setSalida('Error de conexión.')
+      setSalida(
+        'No se pudo conectar con el servidor. Revisa que el backend esté corriendo (cd backend && python main.py).'
+      )
     } finally {
       setEjecutando(false)
     }
   }
 
   return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <div className={styles.logo}>
-          <h2>Tutor's Leveling</h2>
-          <span>Python Workspace</span>
+    <div className={styles.ide}>
+      <header className={styles.toolbar}>
+        <div className={styles.toolbarLeft}>
+          <div className={styles.courseIcon}>
+            <i className="bi bi-filetype-py"></i>
+          </div>
+          <div className={styles.courseInfo}>
+            <h2>Python</h2>
+            <span>Workspace de programación</span>
+          </div>
         </div>
-        <Link to="/dashboard" className={styles.volver}>
-          <i className="bi bi-arrow-left"></i> Volver al Dashboard
-        </Link>
+
+        <div className={styles.toolbarRight}>
+          <button className={styles.run} onClick={ejecutar} disabled={ejecutando}>
+            <i className="bi bi-play-fill"></i>
+            {ejecutando ? ' Ejecutando...' : ' Ejecutar código'}
+          </button>
+          <Link to="/dashboard" className={styles.volver}>
+            <i className="bi bi-arrow-left"></i> Volver
+          </Link>
+        </div>
       </header>
 
-      <main className={styles.main}>
-        <section className={styles.editorContainer}>
-          <div className={styles.tabs}>
-            {Object.keys(archivos).map((nombre) => (
-              <div
-                key={nombre}
-                className={`${styles.tab} ${
-                  archivoActual === nombre ? styles.active : ''
-                }`}
-                onClick={() => setArchivoActual(nombre)}
-              >
-                <i className="bi bi-file-earmark-code"></i>
-                <span>{nombre}</span>
+      <section className={styles.workspace}>
+        <aside className={styles.sidebar}>
+          <div className={styles.sidebarTitle}>Ejercicios</div>
+          {ejercicios.map((ejercicio) => (
+            <div
+              key={ejercicio.archivo}
+              className={`${styles.leccion} ${
+                archivoActual === ejercicio.archivo ? styles.active : ''
+              }`}
+              onClick={() => setArchivoActual(ejercicio.archivo)}
+            >
+              <i className="bi bi-file-earmark-code"></i>
+              <div>
+                <strong>{ejercicio.archivo}</strong>
+                <small>{ejercicio.titulo}</small>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </aside>
 
-          <div className={styles.editor}>
+        <div className={styles.main}>
+          <div className={styles.editorArea}>
             <Editor
               height="100%"
               language="python"
@@ -104,32 +138,30 @@ export default function PythonWorkspace() {
               }}
             />
           </div>
-        </section>
 
-        <button className={styles.run} onClick={ejecutar} disabled={ejecutando}>
-          <i className="bi bi-play-fill"></i>
-          {ejecutando ? ' Ejecutando...' : ' Ejecutar Código'}
-        </button>
+          <div className={styles.bottom}>
+            <div className={styles.panel}>
+              <div className={styles.panelTitle}>
+                <i className="bi bi-keyboard"></i> Entrada (input)
+              </div>
+              <textarea
+                className={styles.stdin}
+                spellCheck="false"
+                value={stdin}
+                onChange={(e) => setStdin(e.target.value)}
+                placeholder="Una línea por cada input()"
+              ></textarea>
+            </div>
 
-        <section className={styles.stdin}>
-          <div className={styles.consoleTitle}>
-            <i className="bi bi-keyboard"></i> Entrada del programa (input)
+            <div className={styles.panel}>
+              <div className={styles.panelTitle}>
+                <i className="bi bi-terminal"></i> Consola
+              </div>
+              <pre className={styles.output}>{salida}</pre>
+            </div>
           </div>
-          <textarea
-            spellCheck="false"
-            value={stdin}
-            onChange={(e) => setStdin(e.target.value)}
-            placeholder="Escribe aquí lo que leerá input(), una línea por dato."
-          ></textarea>
-        </section>
-
-        <section className={styles.console}>
-          <div className={styles.consoleTitle}>
-            <i className="bi bi-terminal"></i> Consola
-          </div>
-          <pre className={styles.output}>{salida}</pre>
-        </section>
-      </main>
+        </div>
+      </section>
     </div>
   )
 }

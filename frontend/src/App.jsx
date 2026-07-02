@@ -3,9 +3,14 @@ import { useAuth } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import EnConstruccion from './pages/EnConstruccion'
 import CursoPlaceholder from './pages/CursoPlaceholder'
 import PythonWorkspace from './courses/python/PythonWorkspace'
 import WebEditor from './courses/web/WebEditor'
+
+function Protegida({ children }) {
+  return <ProtectedRoute>{children}</ProtectedRoute>
+}
 
 function Inicio() {
   const { user } = useAuth()
@@ -18,13 +23,22 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Protegida><Dashboard /></Protegida>} />
         <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
+          path="/estudiantes"
+          element={<Protegida><EnConstruccion seccion="Estudiantes" /></Protegida>}
+        />
+        <Route
+          path="/reportes"
+          element={<Protegida><EnConstruccion seccion="Reportes" /></Protegida>}
+        />
+        <Route
+          path="/mensajes"
+          element={<Protegida><EnConstruccion seccion="Mensajes" /></Protegida>}
+        />
+        <Route
+          path="/configuracion"
+          element={<Protegida><EnConstruccion seccion="Configuración" /></Protegida>}
         />
         <Route
           path="/courses/python"

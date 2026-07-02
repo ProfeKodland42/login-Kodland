@@ -312,11 +312,11 @@
 }
 
 .tabs a:hover {
-  color: white;
+  color: var(--text);
 }
 
 .tabs a.active {
-  color: white;
+  color: var(--text);
 }
 
 .tabs a.active::after {
@@ -328,6 +328,26 @@
   height: 3px;
   border-radius: 20px;
   background: var(--primary);
+}
+
+.construccion {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  color: var(--text2);
+}
+
+.construccion i {
+  font-size: 64px;
+  color: var(--primary);
+}
+
+.construccion h2 {
+  color: var(--text);
+  font-size: 28px;
 }
 
 .cards {
