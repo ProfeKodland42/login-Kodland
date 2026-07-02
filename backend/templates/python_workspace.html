@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Workspace</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/python.css') }}">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+<header>
+    <div class="logo">
+        <h2>Tutor's Leveling</h2>
+        <span>Python Workspace</span>
+    </div>
+    <div>
+        <a href="/dashboard" class="volver">
+            <i class="bi bi-arrow-left"></i>
+            Volver al Dashboard
+        </a>
+    </div>
+</header>
+<main>
+    <!-- =========================================
+                    EDITOR
+    =========================================== -->
+    <section class="editor-container">
+        <!-- Pestañas -->
+        <div class="editor-tabs">
+            <div class="tab active" data-file="main.py">
+                <i class="bi bi-file-earmark-code"></i>
+                <span>main.py</span>
+            </div>
+            <div class="tab" data-file="variables.py">
+                <i class="bi bi-file-earmark-code"></i>
+                <span>variables.py</span>
+            </div>
+            <div class="tab" data-file="ejercicios.py">
+                <i class="bi bi-file-earmark-code"></i>
+                <span>ejercicios.py</span>
+            </div>
+        </div>
+        <!-- Monaco -->
+        <div id="editor"></div>
+    </section>
+    <!-- ==========================================
+                    BOTÓN RUN
+    =========================================== -->
+    <button id="run">
+        <i class="bi bi-play-fill"></i>
+        Ejecutar Código
+    </button>
+    <!-- ==========================================
+                    INPUT
+    =========================================== -->
+    <section class="stdin">
+        <div class="console-title">
+            <i class="bi bi-keyboard"></i>
+            Entrada del programa (input)
+        </div>
+        <textarea
+            id="stdin"
+            spellcheck="false"
+            placeholder="Escribe aquí la información que leerá input().
+                Ejemplo:
+
+                Santiago
+                25
+                Colombia">
+        </textarea>
+    </section>
+    <!-- ==========================================
+                    CONSOLA
+    =========================================== -->
+    <section class="console">
+        <div class="console-title">
+            <i class="bi bi-terminal"></i>
+            Consola
+        </div>
+        <pre id="output">Esperando ejecución...</pre>
+    </section>
+</main>
+<!-- Monaco -->
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>
+<script src="{{ url_for('static', filename='js/python.js') }}"></script>
+</body>
+</html>

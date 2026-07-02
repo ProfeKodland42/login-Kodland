@@ -1,0 +1,743 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+
+    --bg:#1e1e1e;
+    --panel:#252526;
+    --panel2:#2d2d30;
+    --border:#3c3c3c;
+    --accent:#007acc;
+    --text:#f3f3f3;
+    --text2:#cfcfcf;
+    --hover:#37373d;
+
+}
+
+html,
+body{
+
+    width:100%;
+    height:100%;
+    overflow:hidden;
+
+    background:var(--bg);
+
+    font-family:"Segoe UI",sans-serif;
+
+}
+
+.ide{
+
+    width:100%;
+    height:100vh;
+
+    display:flex;
+    flex-direction:column;
+
+    background:var(--bg);
+
+}
+
+/* ==========================
+        TOOLBAR
+========================== */
+
+.toolbar{
+
+    height:55px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:var(--panel);
+
+    border-bottom:1px solid var(--border);
+
+    padding:0 20px;
+
+    color:white;
+
+}
+
+.logo{
+
+    font-size:18px;
+    font-weight:bold;
+
+}
+
+.toolbar-center{
+
+    display:flex;
+    gap:8px;
+
+}
+
+.file-tab{
+
+    border:none;
+
+    background:transparent;
+
+    color:var(--text2);
+
+    padding:10px 18px;
+
+    cursor:pointer;
+
+    border-radius:5px;
+
+    transition:.25s;
+
+}
+
+.file-tab:hover{
+
+    background:var(--hover);
+
+}
+
+.file-tab.active{
+
+    background:var(--accent);
+
+    color:white;
+
+}
+
+.toolbar-right{
+
+    display:flex;
+    gap:10px;
+
+}
+
+.toolbar-right button{
+
+    border:none;
+
+    background:var(--accent);
+
+    color:white;
+
+    padding:10px 18px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.toolbar-right button:hover{
+
+    transform:translateY(-1px);
+
+    background:#1694ef;
+
+}
+
+/* ==========================
+        WORKSPACE
+========================== */
+
+.workspace{
+
+    flex:1;
+
+    display:flex;
+
+    overflow:hidden;
+
+    height:calc(100vh - 90px);
+
+}
+
+/* ==========================
+        SIDEBAR
+========================== */
+
+.sidebar{
+
+    width:290px;
+
+    background:#181d38;
+
+    border-right:1px solid rgba(255,255,255,.05);
+
+    padding:20px;
+
+    overflow:auto;
+
+}
+
+.sidebar-title{
+
+    height:45px;
+
+    display:flex;
+    align-items:center;
+
+    padding-left:18px;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    border-bottom:1px solid var(--border);
+
+}
+
+.sidebar ul{
+
+    list-style:none;
+
+}
+
+.sidebar li{
+
+    height:42px;
+
+    display:flex;
+    align-items:center;
+
+    padding-left:18px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.sidebar li:hover{
+
+    background:var(--hover);
+
+}
+
+.sidebar .selected{
+
+    background:var(--accent);
+
+}
+
+/* ==========================
+        EDITOR
+========================== */
+.editor-container{
+
+    flex:1;
+
+    margin:20px;
+
+    margin-right:10px;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    background:#181d38;
+
+    border:1px solid rgba(255,255,255,.05);
+
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+
+    position:relative;
+
+}
+
+#editor{
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    right:0;
+
+    bottom:0;
+
+}
+
+/* ==========================
+        PREVIEW
+========================== */
+
+.preview-container{
+
+    width:40%;
+
+    min-width:420px;
+
+    margin:20px;
+
+    margin-left:10px;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    background:#181d38;
+
+    border:1px solid rgba(255,255,255,.05);
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.preview-header{
+
+    height:50px;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:0 20px;
+
+    background:#232b54;
+
+    color:white;
+
+    font-weight:600;
+
+}
+
+#preview{
+
+    flex:1;
+
+    width:100%;
+
+    height:100%;
+
+    border:none;
+
+}
+
+/* ==========================
+        CONSOLE
+========================== */
+
+.console{
+
+    height:60px;
+
+    background:#181d38;
+
+    border-top:1px solid rgba(255,255,255,.05);
+
+    color:white;
+
+    padding:0 25px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.console-left{
+
+    font-weight:bold;
+
+}
+
+.console-right{
+
+    color:#cfcfcf;
+
+}
+
+/*======================================
+        NUEVO TOOLBAR
+======================================*/
+
+.toolbar{
+
+    height:72px;
+
+    padding:0 28px;
+
+    background:#181d38;
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+
+}
+
+.toolbar-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+.course-icon{
+
+    width:48px;
+    height:48px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:14px;
+
+    font-size:22px;
+
+    background:#2d3f8f;
+
+}
+
+.course-info{
+
+    display:flex;
+    flex-direction:column;
+
+}
+
+.course-info h2{
+
+    color:white;
+
+    font-size:22px;
+
+    font-weight:700;
+
+}
+
+.course-info span{
+
+    color:#9ca3af;
+
+    margin-top:4px;
+
+    font-size:13px;
+
+}
+
+.toolbar-center{
+
+    gap:6px;
+
+}
+
+.file-tab{
+
+    background:transparent;
+
+    border:none;
+
+    color:#b7bfd3;
+
+    border-radius:10px;
+
+    padding:11px 18px;
+
+    transition:.25s;
+
+}
+
+.file-tab:hover{
+
+    background:#28305c;
+
+}
+
+.file-tab.active{
+
+    background:#4361ee;
+
+    color:white;
+
+}
+
+.toolbar-right{
+
+    gap:12px;
+
+}
+
+.toolbar-right button{
+
+    background:#4361ee;
+
+    border-radius:12px;
+
+    padding:12px 20px;
+
+    font-weight:600;
+
+    box-shadow:0 8px 18px rgba(67,97,238,.25);
+
+}
+
+.toolbar-right button:hover{
+
+    background:#5b75f1;
+
+    transform:translateY(-2px);
+
+}
+
+/*======================================
+        SIDEBAR NUEVA
+======================================*/
+
+.challenge-header{
+
+    background:#232b54;
+
+    border-radius:16px;
+
+    padding:20px;
+
+    margin-bottom:20px;
+
+}
+
+.challenge-header h2{
+
+    color:white;
+
+    font-size:28px;
+
+    margin-bottom:8px;
+
+    line-height:1.2;
+
+}
+
+.challenge-header span{
+
+    color:#8fa3d8;
+
+    font-size:14px;
+
+}
+
+.challenge-section{
+
+    background:#232b54;
+
+    border-radius:16px;
+
+    padding:18px;
+
+    margin-bottom:18px;
+
+}
+
+.challenge-section h3{
+
+    color:white;
+
+    margin-bottom:15px;
+
+    font-size:18px;
+
+}
+
+.goal-list,
+.files-list{
+
+    list-style:none;
+
+}
+
+.goal-list li,
+.files-list li{
+
+    color:#d7d9e8;
+
+    padding:10px 0;
+
+    border-bottom:1px solid rgba(255,255,255,.06);
+
+    transition:.25s;
+
+}
+
+.goal-list li:last-child,
+.files-list li:last-child{
+
+    border:none;
+
+}
+
+.goal-list li:hover,
+.files-list li:hover{
+
+    color:white;
+
+    transform:translateX(6px);
+
+}
+
+.challenge-progress{
+
+    background:#232b54;
+
+    border-radius:16px;
+
+    padding:18px;
+
+}
+
+.progress-title{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:white;
+
+    margin-bottom:15px;
+
+}
+
+.progress-bar{
+
+    width:100%;
+
+    height:12px;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+    background:#141b37;
+
+}
+
+#progressFill{
+
+    width:0%;
+
+    height:100%;
+
+    background:linear-gradient(90deg,#4f7cff,#6a5cff);
+
+    transition:.4s;
+
+}
+
+.challenge-card{
+
+    background:#232b54;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    margin-bottom:18px;
+
+}
+
+.challenge-tag{
+
+    display:inline-block;
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    background:#4361ee;
+
+    color:white;
+
+    font-size:13px;
+
+    margin-bottom:15px;
+
+}
+
+.challenge-card h2{
+
+    color:white;
+
+    line-height:1.2;
+
+    margin-bottom:10px;
+
+}
+
+.challenge-card p{
+
+    color:#BFC7E2;
+
+    line-height:1.6;
+
+}
+
+.goal{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    margin-top:12px;
+
+    background:rgba(255,255,255,.04);
+
+    transition:.25s;
+
+}
+
+.goal:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.goal-icon{
+
+    font-size:22px;
+
+}
+
+.goal strong{
+
+    display:block;
+
+    color:white;
+
+}
+
+.goal small{
+
+    color:#A8B4D9;
+
+}
+
+.progress-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:12px;
+
+    color:white;
+
+}

@@ -1,0 +1,17 @@
+.console{
+
+    height:35px;
+
+    background:#252526;
+
+    color:#ddd;
+
+    display:flex;
+
+    align-items:center;
+
+    padding-left:15px;
+
+    border-top:1px solid #333;
+
+}

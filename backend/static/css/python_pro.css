@@ -1,0 +1,973 @@
+/* =====================================================
+   TUTOR'S LEVELING
+   PYTHON PRO IDE
+===================================================== */
+
+:root{
+
+    --bg:#1e1e1e;
+    --bg2:#252526;
+    --bg3:#2d2d30;
+    --panel:#202020;
+    --border:#333333;
+
+    --primary:#007acc;
+    --primary-hover:#0e639c;
+
+    --text:#d4d4d4;
+    --text2:#9d9d9d;
+
+    --green:#3fb950;
+    --red:#f85149;
+    --yellow:#d29922;
+
+    --shadow:0 0 20px rgba(0,0,0,.25);
+
+    --radius:10px;
+
+}
+
+/* =================================== */
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+html,
+body{
+
+    width:100%;
+
+    height:100%;
+
+    overflow:hidden;
+
+    font-family:"Segoe UI",sans-serif;
+
+    background:var(--bg);
+
+    color:var(--text);
+
+}
+
+/* =================================== */
+
+body{
+
+    display:grid;
+
+    grid-template-rows:55px 1fr 230px 28px;
+
+}
+/* ===================================
+            TOPBAR
+=================================== */
+
+.topbar{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    background:var(--bg2);
+
+    border-bottom:1px solid var(--border);
+
+    padding:0 20px;
+
+}
+
+.logo{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.logo h2{
+
+    font-size:17px;
+
+    color:white;
+
+}
+
+.logo span{
+
+    font-size:12px;
+
+    color:var(--text2);
+
+}
+/* ===================================
+            MENU
+=================================== */
+
+.menu{
+
+    display:flex;
+
+    gap:25px;
+
+    font-size:14px;
+
+}
+
+.menu span{
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    padding:6px 10px;
+
+    border-radius:6px;
+
+}
+
+.menu span:hover{
+
+    background:var(--primary);
+
+}
+/* ===================================
+            LIVE STATUS
+=================================== */
+
+.status-live{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-size:14px;
+
+}
+
+.live-dot{
+
+    width:10px;
+
+    height:10px;
+
+    border-radius:50%;
+
+    background:var(--green);
+
+    box-shadow:0 0 8px var(--green);
+
+}
+/* ===================================
+            WORKSPACE
+=================================== */
+
+.workspace{
+
+    display:grid;
+
+    grid-template-columns:
+
+        55px
+        260px
+        1fr
+        320px;
+
+    overflow:hidden;
+
+}
+/* ===================================
+        ACTIVITY BAR
+=================================== */
+
+.activity-bar{
+
+    background:#181818;
+
+    border-right:1px solid var(--border);
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:22px;
+
+    padding-top:20px;
+
+}
+
+.activity-bar i{
+
+    color:#8a8a8a;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.activity-bar i:hover{
+
+    color:white;
+
+    transform:scale(1.12);
+
+}
+/* =====================================================
+                    EXPLORER
+===================================================== */
+
+.explorer{
+
+    background:var(--bg2);
+
+    border-right:1px solid var(--border);
+
+    display:flex;
+
+    flex-direction:column;
+
+    overflow-y:auto;
+
+}
+
+.explorer::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.explorer::-webkit-scrollbar-thumb{
+
+    background:#3a3a3a;
+
+}
+
+.explorer::-webkit-scrollbar-track{
+
+    background:transparent;
+
+}
+
+
+/* ========================================== */
+
+.panel-title{
+
+    height:40px;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:0 18px;
+
+    font-size:12px;
+
+    letter-spacing:1px;
+
+    font-weight:600;
+
+    color:#b8b8b8;
+
+    border-bottom:1px solid var(--border);
+
+}
+
+
+/* ========================================== */
+
+.folder{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.folder-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:14px 18px;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    color:white;
+
+    transition:.25s;
+
+}
+
+.folder-title:hover{
+
+    background:#2f2f2f;
+
+}
+
+.folder ul{
+
+    list-style:none;
+
+}
+
+
+/* ========================================== */
+
+.folder li{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:10px 35px;
+
+    cursor:pointer;
+
+    color:#c8c8c8;
+
+    font-size:14px;
+
+    transition:.20s;
+
+    border-left:2px solid transparent;
+
+}
+
+.folder li:hover{
+
+    background:#313131;
+
+    border-left:2px solid var(--primary);
+
+    color:white;
+
+}
+
+.folder li i{
+
+    font-size:15px;
+
+}
+
+
+/* ========================================== */
+
+.folder li.active{
+
+    background:#37373d;
+
+    color:white;
+
+    border-left:2px solid var(--primary);
+
+}
+/* =====================================================
+                PROJECT PANEL
+===================================================== */
+
+.project-info{
+
+    background:var(--bg2);
+
+    border-left:1px solid var(--border);
+
+    display:flex;
+
+    flex-direction:column;
+
+    overflow-y:auto;
+
+}
+
+.project-info::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.project-info::-webkit-scrollbar-thumb{
+
+    background:#3d3d3d;
+
+}
+.project-card{
+
+    padding:22px;
+
+}
+
+.project-card h3{
+
+    font-size:22px;
+
+    margin-bottom:18px;
+
+    color:white;
+
+}
+
+.project-card p{
+
+    line-height:1.7;
+
+    color:#bfbfbf;
+
+    margin-bottom:18px;
+
+}
+
+.project-card strong{
+
+    display:block;
+
+    margin-top:18px;
+
+    margin-bottom:10px;
+
+    color:white;
+
+}
+
+.project-card ul{
+
+    padding-left:20px;
+
+    color:#bdbdbd;
+
+}
+
+.project-card li{
+
+    margin-bottom:8px;
+
+}
+
+.project-card hr{
+
+    border:none;
+
+    border-top:1px solid var(--border);
+
+    margin:20px 0;
+
+}
+/* =====================================================
+                COMPONENTES
+===================================================== */
+
+.card{
+
+    background:var(--bg3);
+
+    border:1px solid var(--border);
+
+    border-radius:10px;
+
+    box-shadow:var(--shadow);
+
+}
+
+.badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:4px 10px;
+
+    border-radius:20px;
+
+    background:var(--primary);
+
+    color:white;
+
+    font-size:12px;
+
+}
+
+.divider{
+
+    width:100%;
+
+    height:1px;
+
+    background:var(--border);
+
+    margin:20px 0;
+
+}
+/* =====================================================
+                ANIMACIONES
+===================================================== */
+
+@keyframes fade{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+@keyframes slideLeft{
+
+    from{
+
+        opacity:0;
+
+        transform:translateX(-15px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateX(0);
+
+    }
+
+}
+
+.folder{
+
+    animation:fade .4s;
+
+}
+
+.project-card{
+
+    animation:slideLeft .35s;
+
+}
+/* =====================================================
+                    EDITOR AREA
+===================================================== */
+
+.editor-area{
+
+    display:flex;
+
+    flex-direction:column;
+
+    background:#1e1e1e;
+
+    overflow:hidden;
+
+}
+/* =====================================================
+                        TABS
+===================================================== */
+
+.tabs{
+
+    height:42px;
+
+    display:flex;
+
+    align-items:flex-end;
+
+    background:#252526;
+
+    border-bottom:1px solid var(--border);
+
+}
+.tab{
+
+    height:42px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:0 18px;
+
+    color:#9f9f9f;
+
+    cursor:pointer;
+
+    border-right:1px solid #323232;
+
+    transition:.25s;
+
+    user-select:none;
+
+}
+.tab:hover{
+
+    background:#2f2f2f;
+
+    color:white;
+
+}
+.tab.active{
+
+    background:#1e1e1e;
+
+    color:white;
+
+    border-top:2px solid var(--primary);
+
+}
+.tab i{
+
+    font-size:15px;
+
+}
+/* =====================================================
+                    MONACO
+===================================================== */
+
+#editor{
+
+    flex:1;
+
+    width:100%;
+
+    height:100%;
+
+}
+.editor-area{
+
+    position:relative;
+
+}
+.editor-area::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    right:0;
+
+    top:42px;
+
+    height:1px;
+
+    background:#323232;
+
+    z-index:10;
+
+}
+.tab{
+
+    position:relative;
+
+}
+.tab::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:50%;
+
+    bottom:0;
+
+    width:0;
+
+    height:2px;
+
+    background:var(--primary);
+
+    transition:.25s;
+
+}
+.tab:hover::after{
+
+    width:100%;
+
+    left:0;
+
+}
+.tab.active::after{
+
+    width:100%;
+
+    left:0;
+
+}
+#editor{
+
+    animation:fade .35s;
+
+}
+.editor-area{
+
+    min-width:0;
+
+}
+.monaco-editor,
+.monaco-editor-background{
+
+    background:#1e1e1e !important;
+
+}
+.tabs{
+
+    overflow-x:auto;
+
+    overflow-y:hidden;
+
+}
+
+.tabs::-webkit-scrollbar{
+
+    display:none;
+
+}
+.tabs{
+
+    overflow-x:auto;
+
+    overflow-y:hidden;
+
+}
+
+.tabs::-webkit-scrollbar{
+
+    display:none;
+
+}
+/* ========================================== */
+
+.terminal-header{
+
+    height:42px;
+
+    background:#252526;
+
+    border-bottom:1px solid var(--border);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 18px;
+
+}
+.terminal-header span{
+
+    font-size:13px;
+
+    font-weight:600;
+
+    letter-spacing:1px;
+
+    color:#bfbfbf;
+
+}
+.terminal-header div{
+
+    display:flex;
+
+    gap:10px;
+
+}
+.terminal button{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:8px 15px;
+
+    border:none;
+
+    border-radius:7px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-size:13px;
+
+    transition:.25s;
+
+}
+#run{
+
+    background:var(--primary);
+
+}
+
+#run:hover{
+
+    background:var(--primary-hover);
+
+    transform:translateY(-2px);
+
+}
+#clear{
+
+    background:#3b3b3b;
+
+}
+
+#clear:hover{
+
+    background:#4a4a4a;
+
+}
+#save{
+
+    background:#2d6a4f;
+
+}
+
+#save:hover{
+
+    background:#40916c;
+
+}
+#reset{
+
+    background:#7f1d1d;
+
+}
+
+#reset:hover{
+
+    background:#991b1b;
+
+}
+/* =====================================================
+                    OUTPUT
+===================================================== */
+
+#output{
+
+    flex:1;
+
+    margin:0;
+
+    padding:18px;
+
+    overflow:auto;
+
+    background:#1e1e1e;
+
+    color:#d4d4d4;
+
+    font-family:Consolas,
+                "Courier New",
+                monospace;
+
+    font-size:15px;
+
+    line-height:1.6;
+
+    white-space:pre-wrap;
+
+}
+#output::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+#output::-webkit-scrollbar-thumb{
+
+    background:#444;
+
+}
+
+#output::-webkit-scrollbar-track{
+
+    background:#1e1e1e;
+
+}
+/* =====================================================
+                    STATUS BAR
+===================================================== */
+
+.status-bar{
+
+    background:#007acc;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:28px;
+
+    padding:0 20px;
+
+    font-size:13px;
+
+    user-select:none;
+
+}
+.status-bar span{
+
+    display:flex;
+
+    align-items:center;
+
+}
+.status-bar{
+
+    animation:fade .5s;
+
+}
+.connected{
+
+    color:#90ee90;
+
+}
+
+.running{
+
+    color:#ffd54f;
+
+}
+
+.error{
+
+    color:#ff6b6b;
+
+}
