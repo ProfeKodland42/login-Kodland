@@ -96,5 +96,11 @@ def ejecutar():
         return jsonify(resultado)
     except requests.RequestException:
         return jsonify({"stderr": "No se pudo conectar con el servicio de ejecución."})
+
+
+@app.route("/python_pro")
+def python_pro():
+    return render_template("python_pro.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
