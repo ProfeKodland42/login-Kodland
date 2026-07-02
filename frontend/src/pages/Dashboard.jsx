@@ -44,7 +44,7 @@ const cursos = [
   {
     clave: 'web',
     nombre: 'Web Dev',
-    img: '/img/laptop.png',
+    img: '/img/web.svg',
     descripcion: 'Crea páginas con HTML, CSS y JavaScript.',
     modulos: 5,
     porcentaje: 20,
@@ -167,25 +167,6 @@ export default function Dashboard() {
               </a>
             ))}
           </section>
-
-          <div className={styles.cardsHead}>
-            <button
-              aria-label="Anterior"
-              onClick={() =>
-                cardsRef.current?.scrollBy({ left: -320, behavior: 'smooth' })
-              }
-            >
-              <i className="bi bi-chevron-left"></i>
-            </button>
-            <button
-              aria-label="Siguiente"
-              onClick={() =>
-                cardsRef.current?.scrollBy({ left: 320, behavior: 'smooth' })
-              }
-            >
-              <i className="bi bi-chevron-right"></i>
-            </button>
-          </div>
 
           <section className={styles.cards} ref={cardsRef}>
             {cursos.map((curso) => (
