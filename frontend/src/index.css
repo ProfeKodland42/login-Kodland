@@ -10,6 +10,17 @@ body {
   padding: 0;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+pre {
+  margin: 0;
+}
+
 body {
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg);
