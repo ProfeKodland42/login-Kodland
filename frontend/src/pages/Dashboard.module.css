@@ -142,6 +142,9 @@
 
 .main {
   padding: 35px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
 }
 
 .header {
@@ -327,14 +330,61 @@
   background: var(--primary);
 }
 
-.cards {
+.cardsHead {
   margin-top: 30px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cardsHead button {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: #1b2453;
+  color: white;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.page.light .cardsHead button {
+  background: #dfe6ff;
+  color: #333;
+}
+
+.cardsHead button:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.cards {
+  margin-top: 16px;
+  display: flex;
   gap: 25px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 6px 4px 22px;
+}
+
+.cards::-webkit-scrollbar {
+  height: 8px;
+}
+
+.cards::-webkit-scrollbar-thumb {
+  background: #394caa;
+  border-radius: 20px;
+}
+
+.cards::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .card {
+  flex: 0 0 288px;
+  scroll-snap-align: start;
   background: var(--card);
   border-radius: 22px;
   padding: 28px;
