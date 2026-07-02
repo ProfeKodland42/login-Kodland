@@ -1,0 +1,49 @@
+:root {
+  --brand: #1565c0;
+
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --border: #dfe3e8;
+  --text: #1b1f24;
+  --text-muted: #5b6570;
+  --danger: #c62828;
+}
+
+:root.dark {
+  --bg: #12151a;
+  --surface: #1b1f26;
+  --border: #2b313a;
+  --text: #e7ebf0;
+  --text-muted: #9aa4b0;
+  --danger: #ef9a9a;
+}
+
+[data-course='minecraft'] {
+  --course-primary: #4caf50;
+  --course-secondary: #2e7d32;
+  --course-accent: #8bc34a;
+}
+
+[data-course='scratch'] {
+  --course-primary: #ff6f00;
+  --course-secondary: #e65100;
+  --course-accent: #ffb300;
+}
+
+[data-course='python'] {
+  --course-primary: #1565c0;
+  --course-secondary: #0d47a1;
+  --course-accent: #ffd600;
+}
+
+[data-course='python-pro'] {
+  --course-primary: #4a148c;
+  --course-secondary: #6a1b9a;
+  --course-accent: #ce93d8;
+}
+
+[data-course='web'] {
+  --course-primary: #00695c;
+  --course-secondary: #004d40;
+  --course-accent: #80cbc4;
+}
