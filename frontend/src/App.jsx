@@ -4,6 +4,8 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import CursoPlaceholder from './pages/CursoPlaceholder'
+import PythonWorkspace from './courses/python/PythonWorkspace'
+import WebEditor from './courses/web/WebEditor'
 
 function Inicio() {
   const { user } = useAuth()
@@ -21,6 +23,22 @@ export default function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/courses/python"
+          element={
+            <ProtectedRoute>
+              <PythonWorkspace />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/courses/web"
+          element={
+            <ProtectedRoute>
+              <WebEditor />
             </ProtectedRoute>
           }
         />

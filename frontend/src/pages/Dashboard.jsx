@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useTheme } from '../context/ThemeContext'
@@ -72,7 +72,6 @@ export default function Dashboard() {
   const { user, logout } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const navigate = useNavigate()
-  const cardsRef = useRef(null)
   const [tab, setTab] = useState('Cursos')
   const [animar, setAnimar] = useState(false)
 
@@ -133,29 +132,6 @@ export default function Dashboard() {
             </div>
           </header>
 
-          <section className={styles.hero}>
-            <div className={styles.heroText}>
-              <span className={styles.badge}>Python Pro</span>
-              <h2>
-                Hello, <span>world!</span>
-              </h2>
-              <p>
-                Continúa aprendiendo y administrando tus estudiantes desde un
-                solo lugar.
-              </p>
-              <button
-                onClick={() =>
-                  cardsRef.current?.scrollIntoView({ behavior: 'smooth' })
-                }
-              >
-                Continuar
-              </button>
-            </div>
-            <div className={styles.heroImage}>
-              <img src="/img/python.png" alt="" />
-            </div>
-          </section>
-
           <section className={styles.tabs}>
             {['Cursos', 'Tareas', 'Calificaciones'].map((nombre) => (
               <a
@@ -168,7 +144,7 @@ export default function Dashboard() {
             ))}
           </section>
 
-          <section className={styles.cards} ref={cardsRef}>
+          <section className={styles.cards}>
             {cursos.map((curso) => (
               <div className={styles.card} key={curso.clave}>
                 <img src={curso.img} alt={curso.nombre} />

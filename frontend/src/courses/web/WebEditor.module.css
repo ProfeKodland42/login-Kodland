@@ -1,0 +1,289 @@
+.ide {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #1e1e1e;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.toolbar {
+  height: 72px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #181d38;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0 28px;
+  color: white;
+}
+
+.toolbarLeft {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.courseIcon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 14px;
+  font-size: 22px;
+  background: #2d3f8f;
+}
+
+.courseInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.courseInfo h2 {
+  color: white;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.courseInfo span {
+  color: #9ca3af;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.toolbarCenter {
+  display: flex;
+  gap: 6px;
+}
+
+.fileTab {
+  background: transparent;
+  border: none;
+  color: #b7bfd3;
+  border-radius: 10px;
+  padding: 11px 18px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.fileTab:hover {
+  background: #28305c;
+}
+
+.fileTab.active {
+  background: #4361ee;
+  color: white;
+}
+
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbarRight button,
+.volver {
+  background: #4361ee;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  box-shadow: 0 8px 18px rgba(67, 97, 238, 0.25);
+  transition: 0.25s;
+}
+
+.volver {
+  background: #28305c;
+}
+
+.toolbarRight button:hover {
+  background: #5b75f1;
+  transform: translateY(-2px);
+}
+
+.volver:hover {
+  background: #333c6d;
+}
+
+.workspace {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 300px;
+  background: #181d38;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  overflow: auto;
+}
+
+.challengeCard {
+  background: #232b54;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+.challengeTag {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #4361ee;
+  color: white;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+.challengeCard h2 {
+  color: white;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.challengeCard h3 {
+  color: white;
+  margin-bottom: 6px;
+  font-size: 18px;
+}
+
+.challengeCard p {
+  color: #bfc7e2;
+  line-height: 1.6;
+}
+
+.goal {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 14px;
+  border-radius: 12px;
+  margin-top: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  transition: 0.25s;
+}
+
+.goal:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.goalIcon {
+  font-size: 22px;
+  color: #8fa3d8;
+}
+
+.goalIcon.done {
+  color: #4ade80;
+}
+
+.goal strong {
+  display: block;
+  color: white;
+}
+
+.goal small {
+  color: #a8b4d9;
+}
+
+.xp {
+  margin-top: 10px;
+  color: #6c8cff;
+  font-size: 34px;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.progressBar {
+  width: 100%;
+  height: 12px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #141b37;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #4f7cff, #6a5cff);
+  transition: 0.4s;
+}
+
+.editorContainer {
+  flex: 1;
+  margin: 20px 10px 20px 20px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #181d38;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.previewContainer {
+  width: 40%;
+  min-width: 400px;
+  margin: 20px 20px 20px 10px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #181d38;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.previewHeader {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  background: #232b54;
+  color: white;
+  font-weight: 600;
+}
+
+.preview {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: white;
+}
+
+.console {
+  height: 60px;
+  background: #181d38;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: white;
+  padding: 0 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.consoleLeft {
+  font-weight: bold;
+}
+
+.consoleRight {
+  color: #cfcfcf;
+}
+
+@media (max-width: 1100px) {
+  .sidebar {
+    display: none;
+  }
+  .previewContainer {
+    min-width: 300px;
+    width: 45%;
+  }
+}
