@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Editor from '@monaco-editor/react'
 import reto from './modulo1.json'
+import { marcarModulo } from '../../utils/progreso'
 import styles from './WebEditor.module.css'
 
 const archivosIniciales = {
@@ -75,6 +76,10 @@ export default function WebEditor() {
   const total = objetivos.length
   const porcentaje = Math.round((completados / total) * 100)
   const documento = useMemo(() => construirDocumento(archivos), [archivos])
+
+  useEffect(() => {
+    if (porcentaje === 100) marcarModulo('web', 'modulo1')
+  }, [porcentaje])
 
   function vistaPrevia() {
     const ventana = window.open()

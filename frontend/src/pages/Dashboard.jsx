@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import DashboardLayout from '../components/DashboardLayout'
+import { modulosCompletados } from '../utils/progreso'
 import styles from './Dashboard.module.css'
 
 const cursos = [
@@ -62,6 +63,14 @@ export default function Dashboard() {
     return () => clearTimeout(t)
   }, [])
 
+  const progreso = useMemo(() => {
+    const conteo = {}
+    cursos.forEach((c) => {
+      conteo[c.clave] = modulosCompletados(c.clave).length
+    })
+    return conteo
+  }, [])
+
   const claseRol = user.rol === 'admin' ? 'Administrador' : 'Tutor'
   const saludo = (() => {
     const hora = new Date().getHours()
@@ -77,26 +86,32 @@ export default function Dashboard() {
       </section>
 
       <section className={styles.cards}>
-        {cursos.map((curso) => (
-          <div className={styles.card} key={curso.clave}>
-            <img src={curso.img} alt={curso.nombre} />
-            <h3>{curso.nombre}</h3>
-            <p>{curso.descripcion}</p>
-            <div className={styles.progress}>
-              <div
-                className={styles.bar}
-                style={{ width: animar ? `${curso.porcentaje}%` : '0%' }}
-              ></div>
+        {cursos.map((curso) => {
+          const completados = progreso[curso.clave]
+          const porcentaje = Math.round((completados / curso.modulos) * 100)
+          return (
+            <div className={styles.card} key={curso.clave}>
+              <img src={curso.img} alt={curso.nombre} />
+              <h3>{curso.nombre}</h3>
+              <p>{curso.descripcion}</p>
+              <div className={styles.progress}>
+                <div
+                  className={styles.bar}
+                  style={{ width: animar ? `${porcentaje}%` : '0%' }}
+                ></div>
+              </div>
+              <div className={styles.info}>
+                <span>
+                  {completados}/{curso.modulos} módulos
+                </span>
+                <span>{porcentaje}%</span>
+              </div>
+              <button onClick={() => navigate(`/courses/${curso.clave}`)}>
+                {curso.accion}
+              </button>
             </div>
-            <div className={styles.info}>
-              <span>{curso.modulos} módulos</span>
-              <span>{curso.porcentaje}%</span>
-            </div>
-            <button onClick={() => navigate(`/courses/${curso.clave}`)}>
-              {curso.accion}
-            </button>
-          </div>
-        ))}
+          )
+        })}
       </section>
     </DashboardLayout>
   )
