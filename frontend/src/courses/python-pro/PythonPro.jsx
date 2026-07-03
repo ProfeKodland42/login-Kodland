@@ -71,7 +71,11 @@ export default function PythonPro() {
       setEstado('Completed')
     } catch {
       setSalida(
-        'Connection Error\nRevisa que el backend esté corriendo (cd backend && python main.py).'
+        'No hay conexión con el backend.\n\n' +
+          'Abre otra terminal y ejecuta:\n' +
+          '   cd backend\n' +
+          '   python main.py\n\n' +
+          'Deja esa terminal abierta y vuelve a dar Run.'
       )
       setEstado('Error')
     } finally {
@@ -175,13 +179,15 @@ export default function PythonPro() {
             <p>{info.descripcion}</p>
             <hr />
             <strong>Nivel</strong>
-            <p>Python Pro</p>
+            <span className={styles.nivel}>Python Pro</span>
             <strong>Conceptos</strong>
-            <ul>
+            <div className={styles.chips}>
               {info.conceptos.map((concepto) => (
-                <li key={concepto}>{concepto}</li>
+                <span key={concepto} className={styles.chip}>
+                  {concepto}
+                </span>
               ))}
-            </ul>
+            </div>
           </div>
         </aside>
       </main>
