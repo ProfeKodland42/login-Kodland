@@ -1,0 +1,90 @@
+.page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #1e1e1e;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.toolbar {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: #241a10;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: white;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-size: 22px;
+  background: #ff6f00;
+}
+
+.info h2 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.info span {
+  color: #c9a98a;
+  font-size: 13px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.abrir,
+.volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+.abrir {
+  background: #ff6f00;
+}
+
+.abrir:hover {
+  background: #e65100;
+}
+
+.volver {
+  background: #3a2c1c;
+}
+
+.volver:hover {
+  background: #4a3826;
+}
+
+.editor {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: white;
+}

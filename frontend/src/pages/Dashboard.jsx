@@ -22,7 +22,7 @@ const cursos = [
     descripcion: 'Historias, videojuegos y animaciones.',
     modulos: 8,
     porcentaje: 40,
-    accion: 'Ver módulos',
+    accion: 'Abrir Scratch',
   },
   {
     clave: 'python-pro',

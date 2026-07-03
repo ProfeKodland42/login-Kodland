@@ -7,6 +7,7 @@ import EnConstruccion from './pages/EnConstruccion'
 import CursoPlaceholder from './pages/CursoPlaceholder'
 import PythonWorkspace from './courses/python/PythonWorkspace'
 import PythonPro from './courses/python-pro/PythonPro'
+import ScratchCourse from './courses/scratch/ScratchCourse'
 import WebEditor from './courses/web/WebEditor'
 
 function Protegida({ children }) {
@@ -62,6 +63,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <PythonPro />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/courses/scratch"
+          element={
+            <ProtectedRoute>
+              <ScratchCourse />
             </ProtectedRoute>
           }
         />
