@@ -4,6 +4,10 @@ const AuthContext = createContext(null)
 
 const STORAGE_KEY = 'kodland_user'
 
+// En desarrollo queda vacío (Vite hace proxy a Flask). En producción se define
+// VITE_API_URL con la URL del backend en Render.
+const API_URL = import.meta.env.VITE_API_URL || ''
+
 function readStoredUser() {
   const raw = localStorage.getItem(STORAGE_KEY)
   if (!raw) return null
@@ -18,7 +22,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(readStoredUser)
 
   async function login(usuario, password) {
-    const respuesta = await fetch('/login', {
+    const respuesta = await fetch(`${API_URL}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ usuario, password }),

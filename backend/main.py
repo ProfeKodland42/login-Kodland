@@ -7,6 +7,15 @@ from flask import request, jsonify
 
 app = Flask(__name__)
 
+# CORS: necesario en producción para que el frontend (Vercel) pueda llamar al
+# backend (Render), que están en dominios distintos. Import seguro: si flask-cors
+# no está instalado en local, no rompe el servidor de desarrollo.
+try:
+    from flask_cors import CORS
+    CORS(app)
+except ImportError:
+    pass
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
