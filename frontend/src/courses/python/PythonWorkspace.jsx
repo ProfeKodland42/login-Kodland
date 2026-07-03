@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Editor from '@monaco-editor/react'
-import { ejecutarPython } from '../../utils/pyodideRunner'
+import { usePythonRunner } from '../../hooks/usePythonRunner'
 import styles from './PythonWorkspace.module.css'
 
 const ejercicios = [
@@ -48,41 +48,26 @@ const codigoInicial = Object.fromEntries(
 export default function PythonWorkspace() {
   const [archivos, setArchivos] = useState(codigoInicial)
   const [archivoActual, setArchivoActual] = useState('main.py')
-  const [stdin, setStdin] = useState('')
-  const [salida, setSalida] = useState('Esperando ejecución...')
-  const [ejecutando, setEjecutando] = useState(false)
+  const {
+    salida,
+    ejecutando,
+    esperando,
+    linea,
+    setLinea,
+    ejecutar,
+    enviarLinea,
+  } = usePythonRunner()
 
-  async function ejecutar() {
-    setEjecutando(true)
-    setSalida('Cargando Python… (la primera vez puede tardar unos segundos)')
+  const inputRef = useRef(null)
+  const salidaRef = useRef(null)
 
-    const lineas = stdin ? stdin.split('\n') : []
-    let indice = 0
-    const pedirEntrada = (pregunta) =>
-      indice < lineas.length
-        ? lineas[indice++]
-        : window.prompt(pregunta || 'Entrada del programa:')
+  useEffect(() => {
+    if (esperando) inputRef.current?.focus()
+  }, [esperando])
 
-    let acumulado = ''
-    let empezado = false
-    const onOutput = (texto) => {
-      if (!empezado) {
-        empezado = true
-        acumulado = ''
-      }
-      acumulado += texto
-      setSalida(acumulado)
-    }
-
-    try {
-      await ejecutarPython(archivos[archivoActual], { onOutput, pedirEntrada })
-      if (!empezado || acumulado.trim() === '') setSalida('Proceso finalizado.')
-    } catch (error) {
-      setSalida('No se pudo iniciar Python.\n' + (error?.message ?? error))
-    } finally {
-      setEjecutando(false)
-    }
-  }
+  useEffect(() => {
+    if (salidaRef.current) salidaRef.current.scrollTop = salidaRef.current.scrollHeight
+  }, [salida])
 
   return (
     <div className={styles.ide}>
@@ -98,7 +83,11 @@ export default function PythonWorkspace() {
         </div>
 
         <div className={styles.toolbarRight}>
-          <button className={styles.run} onClick={ejecutar} disabled={ejecutando}>
+          <button
+            className={styles.run}
+            onClick={() => ejecutar(archivos[archivoActual])}
+            disabled={ejecutando}
+          >
             <i className="bi bi-play-fill"></i>
             {ejecutando ? ' Ejecutando...' : ' Ejecutar código'}
           </button>
@@ -147,25 +136,32 @@ export default function PythonWorkspace() {
             />
           </div>
 
-          <div className={styles.bottom}>
-            <div className={styles.panel}>
-              <div className={styles.panelTitle}>
-                <i className="bi bi-keyboard"></i> Entrada (input)
-              </div>
-              <textarea
-                className={styles.stdin}
-                spellCheck="false"
-                value={stdin}
-                onChange={(e) => setStdin(e.target.value)}
-                placeholder="Opcional: respuestas de input() (una por línea). Si lo dejas vacío, se te pregunta al momento."
-              ></textarea>
+          <div className={styles.consola}>
+            <div className={styles.consolaTitle}>
+              <i className="bi bi-terminal"></i> Consola
             </div>
-
-            <div className={styles.panel}>
-              <div className={styles.panelTitle}>
-                <i className="bi bi-terminal"></i> Consola
-              </div>
-              <pre className={styles.output}>{salida}</pre>
+            <pre className={styles.output} ref={salidaRef}>
+              {salida}
+            </pre>
+            <div className={styles.inputLine}>
+              <span className={styles.prompt}>&rsaquo;</span>
+              <input
+                ref={inputRef}
+                className={styles.entrada}
+                value={linea}
+                disabled={!esperando}
+                placeholder={
+                  esperando
+                    ? 'Escribe tu respuesta y presiona Enter'
+                    : ejecutando
+                    ? 'Ejecutando…'
+                    : 'Presiona “Ejecutar código” para empezar'
+                }
+                onChange={(e) => setLinea(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') enviarLinea()
+                }}
+              />
             </div>
           </div>
         </div>

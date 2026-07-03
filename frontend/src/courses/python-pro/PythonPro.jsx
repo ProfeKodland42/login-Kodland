@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Editor from '@monaco-editor/react'
-import { ejecutarPython } from '../../utils/pyodideRunner'
+import { usePythonRunner } from '../../hooks/usePythonRunner'
 import calculatorCode from './calculator.py?raw'
 import chatbotCode from './chatbot.py?raw'
 import passwordCode from './password.py?raw'
@@ -42,54 +42,33 @@ export default function PythonPro() {
   const [valores, setValores] = useState(codigoInicial)
   const [actual, setActual] = useState('calculator')
   const [abiertos, setAbiertos] = useState(['calculator'])
-  const [entrada, setEntrada] = useState('')
-  const [salida, setSalida] = useState('Python Pro IDE\nEsperando ejecución...')
-  const [estado, setEstado] = useState('Connected')
-  const [ejecutando, setEjecutando] = useState(false)
+  const {
+    salida,
+    ejecutando,
+    esperando,
+    linea,
+    setLinea,
+    ejecutar,
+    enviarLinea,
+    limpiar,
+  } = usePythonRunner()
+
+  const inputRef = useRef(null)
+  const salidaRef = useRef(null)
+
+  useEffect(() => {
+    if (esperando) inputRef.current?.focus()
+  }, [esperando])
+
+  useEffect(() => {
+    if (salidaRef.current) salidaRef.current.scrollTop = salidaRef.current.scrollHeight
+  }, [salida])
+
+  const estado = esperando ? 'Waiting' : ejecutando ? 'Running' : 'Ready'
 
   function abrir(clave) {
     setActual(clave)
     setAbiertos((prev) => (prev.includes(clave) ? prev : [...prev, clave]))
-  }
-
-  async function ejecutar() {
-    setEjecutando(true)
-    setEstado('Running...')
-    setSalida('Cargando Python… (la primera vez puede tardar unos segundos)')
-
-    const lineas = entrada ? entrada.split('\n') : []
-    let indice = 0
-    const pedirEntrada = (pregunta) =>
-      indice < lineas.length
-        ? lineas[indice++]
-        : window.prompt(pregunta || 'Entrada del programa:')
-
-    let acumulado = ''
-    let empezado = false
-    const onOutput = (texto) => {
-      if (!empezado) {
-        empezado = true
-        acumulado = ''
-      }
-      acumulado += texto
-      setSalida(acumulado)
-    }
-
-    try {
-      await ejecutarPython(valores[actual], { onOutput, pedirEntrada })
-      if (!empezado || acumulado.trim() === '')
-        setSalida('Process finished successfully.')
-      setEstado('Completed')
-    } catch (error) {
-      setSalida('No se pudo iniciar Python.\n' + (error?.message ?? error))
-      setEstado('Error')
-    } finally {
-      setEjecutando(false)
-    }
-  }
-
-  function limpiar() {
-    setSalida('Python Pro IDE\n\nConsole cleared.')
   }
 
   const info = proyectos[actual]
@@ -201,7 +180,11 @@ export default function PythonPro() {
         <div className={styles.terminalHeader}>
           <span>TERMINAL</span>
           <div>
-            <button className={styles.run} onClick={ejecutar} disabled={ejecutando}>
+            <button
+              className={styles.run}
+              onClick={() => ejecutar(valores[actual])}
+              disabled={ejecutando}
+            >
               <i className="bi bi-play-fill"></i>
               {ejecutando ? ' Running...' : ' Run'}
             </button>
@@ -211,14 +194,29 @@ export default function PythonPro() {
           </div>
         </div>
         <div className={styles.terminalBody}>
-          <textarea
-            className={styles.stdin}
-            spellCheck="false"
-            value={entrada}
-            onChange={(e) => setEntrada(e.target.value)}
-            placeholder="Opcional: respuestas de input(). Vacío = te pregunta al momento."
-          ></textarea>
-          <pre className={styles.output}>{salida}</pre>
+          <pre className={styles.output} ref={salidaRef}>
+            {salida}
+          </pre>
+          <div className={styles.inputLine}>
+            <span className={styles.prompt}>&rsaquo;</span>
+            <input
+              ref={inputRef}
+              className={styles.entrada}
+              value={linea}
+              disabled={!esperando}
+              placeholder={
+                esperando
+                  ? 'Escribe tu respuesta y presiona Enter'
+                  : ejecutando
+                  ? 'Ejecutando…'
+                  : 'Presiona Run para ejecutar'
+              }
+              onChange={(e) => setLinea(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') enviarLinea()
+              }}
+            />
+          </div>
         </div>
       </section>
 

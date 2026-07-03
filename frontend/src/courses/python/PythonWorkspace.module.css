@@ -172,44 +172,23 @@
   background: #1e1e1e;
 }
 
-.bottom {
-  height: 220px;
-  display: flex;
-  gap: 18px;
-}
-
-.panel {
-  flex: 1;
+.consola {
+  height: 230px;
   display: flex;
   flex-direction: column;
-  background: #161d3d;
+  background: #10152f;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #29325e;
 }
 
-.panelTitle {
+.consolaTitle {
   background: #24305f;
   padding: 12px 16px;
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 14px;
-}
-
-.stdin {
-  flex: 1;
-  border: none;
-  resize: none;
-  background: #10152f;
-  color: #e7ebf7;
-  padding: 14px 16px;
-  font-family: ui-monospace, Consolas, monospace;
-  font-size: 14px;
-}
-
-.stdin:focus {
-  outline: none;
 }
 
 .output {
@@ -221,14 +200,44 @@
   white-space: pre-wrap;
   font-family: ui-monospace, Consolas, monospace;
   font-size: 14px;
+  line-height: 1.5;
+}
+
+.inputLine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  border-top: 1px solid #29325e;
+  background: #0c112a;
+}
+
+.prompt {
+  color: #55ff55;
+  font-family: ui-monospace, Consolas, monospace;
+  font-weight: 700;
+}
+
+.entrada {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #e7ebf7;
+  padding: 12px 0;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 14px;
+}
+
+.entrada:focus {
+  outline: none;
+}
+
+.entrada:disabled {
+  color: #6b7594;
 }
 
 @media (max-width: 900px) {
   .sidebar {
     display: none;
-  }
-  .bottom {
-    flex-direction: column;
-    height: auto;
   }
 }
