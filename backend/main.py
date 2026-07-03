@@ -106,5 +106,10 @@ def ejecutar():
 def python_pro():
     return render_template("python_pro.html")
 
+@app.route("/minecraft")
+def minecraft():
+    return render_template("minecraft.html")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
