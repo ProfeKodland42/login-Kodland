@@ -30,7 +30,7 @@ const cursos = [
     descripcion: 'Lleva tu programación al siguiente nivel.',
     modulos: 15,
     porcentaje: 25,
-    accion: 'Ver módulos',
+    accion: 'Abrir IDE',
   },
   {
     clave: 'minecraft',

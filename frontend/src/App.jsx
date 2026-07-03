@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard'
 import EnConstruccion from './pages/EnConstruccion'
 import CursoPlaceholder from './pages/CursoPlaceholder'
 import PythonWorkspace from './courses/python/PythonWorkspace'
+import PythonPro from './courses/python-pro/PythonPro'
 import WebEditor from './courses/web/WebEditor'
 
 function Protegida({ children }) {
@@ -53,6 +54,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <WebEditor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/courses/python-pro"
+          element={
+            <ProtectedRoute>
+              <PythonPro />
             </ProtectedRoute>
           }
         />
