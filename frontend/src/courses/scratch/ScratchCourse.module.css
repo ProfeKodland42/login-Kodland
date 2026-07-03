@@ -11,7 +11,7 @@
   height: 64px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 18px;
   padding: 0 24px;
   background: #241a10;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -45,6 +45,44 @@
   font-size: 13px;
 }
 
+.center {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.input {
+  flex: 1;
+  height: 40px;
+  border: 1px solid #4a3826;
+  border-radius: 10px;
+  background: #16100a;
+  color: #f3e9df;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+.input:focus {
+  outline: 2px solid #ff6f00;
+}
+
+.cargar {
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  padding: 0 18px;
+  background: #ff6f00;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cargar:hover {
+  background: #e65100;
+}
+
 .right {
   display: flex;
   align-items: center;
@@ -64,6 +102,7 @@
   font-size: 14px;
   font-weight: 600;
   color: white;
+  white-space: nowrap;
 }
 
 .abrir {
@@ -87,4 +126,35 @@
   width: 100%;
   border: none;
   background: white;
+}
+
+.placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  padding: 24px;
+  color: #c9a98a;
+}
+
+.placeholder i {
+  font-size: 64px;
+  color: #ff6f00;
+}
+
+.placeholder h3 {
+  color: white;
+  font-size: 24px;
+}
+
+.placeholder p {
+  max-width: 460px;
+  line-height: 1.6;
+}
+
+.placeholder strong {
+  color: #ffb300;
 }
