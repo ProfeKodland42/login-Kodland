@@ -40,7 +40,7 @@ const cursos = [
     descripcion: 'Aprende creando mundos increíbles.',
     modulos: 7,
     porcentaje: 10,
-    accion: 'Ver módulos',
+    accion: 'Ver proyectos',
   },
   {
     clave: 'web',

@@ -8,6 +8,7 @@ import CursoPlaceholder from './pages/CursoPlaceholder'
 import PythonWorkspace from './courses/python/PythonWorkspace'
 import PythonPro from './courses/python-pro/PythonPro'
 import ScratchCourse from './courses/scratch/ScratchCourse'
+import MinecraftCourse from './courses/minecraft/MinecraftCourse'
 import WebEditor from './courses/web/WebEditor'
 
 function Protegida({ children }) {
@@ -71,6 +72,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <ScratchCourse />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/courses/minecraft"
+          element={
+            <ProtectedRoute>
+              <MinecraftCourse />
             </ProtectedRoute>
           }
         />
