@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Editor from '@monaco-editor/react'
+import { ejecutarPython } from '../../utils/pyodideRunner'
 import styles from './PythonWorkspace.module.css'
 
 const ejercicios = [
@@ -53,24 +54,31 @@ export default function PythonWorkspace() {
 
   async function ejecutar() {
     setEjecutando(true)
-    setSalida('Ejecutando...')
+    setSalida('Cargando Python… (la primera vez puede tardar unos segundos)')
+
+    const lineas = stdin ? stdin.split('\n') : []
+    let indice = 0
+    const pedirEntrada = () =>
+      indice < lineas.length
+        ? lineas[indice++]
+        : window.prompt('Entrada del programa:')
+
+    let acumulado = ''
+    let empezado = false
+    const onOutput = (texto) => {
+      if (!empezado) {
+        empezado = true
+        acumulado = ''
+      }
+      acumulado += texto
+      setSalida(acumulado)
+    }
+
     try {
-      const respuesta = await fetch('/ejecutar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ codigo: archivos[archivoActual], entrada: stdin }),
-      })
-      const datos = await respuesta.json()
-      let texto = ''
-      if (datos.stdout) texto += datos.stdout
-      if (datos.stderr) texto += datos.stderr
-      if (datos.build_stderr) texto += datos.build_stderr
-      if (datos.build_result) texto += datos.build_result
-      setSalida(texto.trim() === '' ? 'Proceso finalizado.' : texto)
-    } catch {
-      setSalida(
-        'No se pudo conectar con el servidor. Revisa que el backend esté corriendo (cd backend && python main.py).'
-      )
+      await ejecutarPython(archivos[archivoActual], { onOutput, pedirEntrada })
+      if (!empezado || acumulado.trim() === '') setSalida('Proceso finalizado.')
+    } catch (error) {
+      setSalida('No se pudo iniciar Python.\n' + (error?.message ?? error))
     } finally {
       setEjecutando(false)
     }
@@ -149,7 +157,7 @@ export default function PythonWorkspace() {
                 spellCheck="false"
                 value={stdin}
                 onChange={(e) => setStdin(e.target.value)}
-                placeholder="Una línea por cada input()"
+                placeholder="Opcional: respuestas de input() (una por línea). Si lo dejas vacío, se te pregunta al momento."
               ></textarea>
             </div>
 

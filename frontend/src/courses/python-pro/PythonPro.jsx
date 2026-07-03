@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Editor from '@monaco-editor/react'
+import { ejecutarPython } from '../../utils/pyodideRunner'
 import calculatorCode from './calculator.py?raw'
 import chatbotCode from './chatbot.py?raw'
 import passwordCode from './password.py?raw'
@@ -54,29 +55,33 @@ export default function PythonPro() {
   async function ejecutar() {
     setEjecutando(true)
     setEstado('Running...')
-    setSalida('Running project...\nPlease wait...')
+    setSalida('Cargando Python… (la primera vez puede tardar unos segundos)')
+
+    const lineas = entrada ? entrada.split('\n') : []
+    let indice = 0
+    const pedirEntrada = () =>
+      indice < lineas.length
+        ? lineas[indice++]
+        : window.prompt('Entrada del programa:')
+
+    let acumulado = ''
+    let empezado = false
+    const onOutput = (texto) => {
+      if (!empezado) {
+        empezado = true
+        acumulado = ''
+      }
+      acumulado += texto
+      setSalida(acumulado)
+    }
+
     try {
-      const respuesta = await fetch('/ejecutar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ codigo: valores[actual], entrada }),
-      })
-      const datos = await respuesta.json()
-      let texto = ''
-      if (datos.stdout) texto += datos.stdout
-      if (datos.stderr) texto += datos.stderr
-      if (datos.build_stderr) texto += datos.build_stderr
-      if (datos.build_result) texto += datos.build_result
-      setSalida(texto.trim() === '' ? 'Process finished successfully.' : texto)
+      await ejecutarPython(valores[actual], { onOutput, pedirEntrada })
+      if (!empezado || acumulado.trim() === '')
+        setSalida('Process finished successfully.')
       setEstado('Completed')
-    } catch {
-      setSalida(
-        'No hay conexión con el backend.\n\n' +
-          'Abre otra terminal y ejecuta:\n' +
-          '   cd backend\n' +
-          '   python main.py\n\n' +
-          'Deja esa terminal abierta y vuelve a dar Run.'
-      )
+    } catch (error) {
+      setSalida('No se pudo iniciar Python.\n' + (error?.message ?? error))
       setEstado('Error')
     } finally {
       setEjecutando(false)
@@ -211,7 +216,7 @@ export default function PythonPro() {
             spellCheck="false"
             value={entrada}
             onChange={(e) => setEntrada(e.target.value)}
-            placeholder="Entrada (input): una línea por cada input()"
+            placeholder="Opcional: respuestas de input(). Vacío = te pregunta al momento."
           ></textarea>
           <pre className={styles.output}>{salida}</pre>
         </div>
