@@ -23,25 +23,44 @@ async function obtenerPyodide() {
   return pyodidePromise
 }
 
-// Ejecuta código Python en el navegador.
-// onOutput(texto): recibe la salida a medida que se produce.
-// pedirEntrada(): devuelve la siguiente línea de input(), o null para terminar.
+// Reemplaza input() para que muestre la pregunta real y pida el dato al momento.
+const SHIM_INPUT = [
+  'import builtins as __b',
+  'def __input(prompt=""):',
+  '    r = __pedir_entrada(prompt)',
+  '    if r is None:',
+  '        raise EOFError("entrada cancelada")',
+  '    return r',
+  '__b.input = __input',
+].join('\n')
+
+// Ejecuta código Python en el navegador con Pyodide.
+// onOutput(texto): salida en vivo (incluye el eco de la conversación).
+// pedirEntrada(prompt): devuelve la respuesta al input(), o null para terminar.
 export async function ejecutarPython(codigo, { onOutput, pedirEntrada }) {
   const pyodide = await obtenerPyodide()
 
   pyodide.setStdout({ batched: (texto) => onOutput(texto) })
   pyodide.setStderr({ batched: (texto) => onOutput(texto) })
-  pyodide.setStdin({
-    stdin: () => {
-      const linea = pedirEntrada()
-      if (linea === null || linea === undefined) return null
-      return linea + '\n'
-    },
+
+  pyodide.globals.set('__pedir_entrada', (prompt) => {
+    const pregunta = typeof prompt === 'string' ? prompt : ''
+    if (pregunta) onOutput(pregunta)
+    const respuesta = pedirEntrada(pregunta)
+    if (respuesta === null || respuesta === undefined) return null
+    onOutput(respuesta + '\n')
+    return respuesta
   })
 
   try {
+    await pyodide.runPythonAsync(SHIM_INPUT)
     await pyodide.runPythonAsync(codigo)
   } catch (error) {
-    onOutput('\n' + (error?.message ?? String(error)))
+    const mensaje = error?.message ?? String(error)
+    if (mensaje.includes('EOFError')) {
+      onOutput('\n[Ejecución detenida: faltó una respuesta de input()]')
+    } else {
+      onOutput('\n' + mensaje)
+    }
   }
 }

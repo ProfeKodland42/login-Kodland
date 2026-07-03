@@ -59,10 +59,10 @@ export default function PythonPro() {
 
     const lineas = entrada ? entrada.split('\n') : []
     let indice = 0
-    const pedirEntrada = () =>
+    const pedirEntrada = (pregunta) =>
       indice < lineas.length
         ? lineas[indice++]
-        : window.prompt('Entrada del programa:')
+        : window.prompt(pregunta || 'Entrada del programa:')
 
     let acumulado = ''
     let empezado = false
