@@ -13,7 +13,7 @@ const proyectos = {
     descripcion:
       'Aprende a construir tu primera casa utilizando madera, piedra y vidrio. Ideal para comenzar en el modo supervivencia.',
     conceptos: ['Bloques', 'Crafting', 'Puertas', 'Ventanas'],
-    practica: 'https://studio.code.org/courses/aquatic/units/1/lessons/1/levels/1',
+    practica: 'https://studio.code.org/s/mc/lessons/1/levels/1',
   },
   bridge: {
     titulo: 'Wooden Bridge',
@@ -37,7 +37,7 @@ const proyectos = {
     descripcion:
       'Aprende a levantar un castillo medieval utilizando piedra, murallas y torres.',
     conceptos: ['Murallas', 'Torres', 'Decoración', 'Escalas'],
-    practica: 'https://studio.code.org/courses/aquatic/units/1/lessons/1/levels/1',
+    practica: 'https://studio.code.org/s/hero/lessons/1/levels/1',
   },
   redstone: {
     titulo: 'Redstone Door',
@@ -49,7 +49,7 @@ const proyectos = {
     descripcion:
       'Automatiza una puerta utilizando Redstone, palancas y pistones.',
     conceptos: ['Redstone', 'Pistones', 'Palancas', 'Circuitos'],
-    practica: 'https://studio.code.org/courses/aquatic/units/1/lessons/1/levels/1',
+    practica: 'https://code.org/hour-of-code/minecraft',
   },
   farm: {
     titulo: 'Automatic Farm',
@@ -61,7 +61,7 @@ const proyectos = {
     descripcion:
       'Construye una granja automática para producir comida de forma eficiente.',
     conceptos: ['Agua', 'Cultivos', 'Tolvas', 'Automatización'],
-    practica: 'https://studio.code.org/courses/aquatic/units/1/lessons/1/levels/1',
+    practica: 'https://code.org/hour-of-code/minecraft',
   },
 }
 
@@ -138,15 +138,14 @@ export default function MinecraftCourse() {
             </ul>
             <hr />
             <h4>¿Listo para practicar?</h4>
-            <p>Ahora intenta construir este proyecto en Minecraft Education.</p>
+            <p>Aprende a programar con esta actividad de Minecraft en code.org.</p>
             <a
               className={styles.practiceBtn}
               href={data.practica}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <i className="bi bi-box-arrow-up-right"></i> Practicar en Minecraft
-              Education
+              <i className="bi bi-box-arrow-up-right"></i> Ir a la actividad
             </a>
           </div>
         </aside>
