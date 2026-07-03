@@ -2,7 +2,7 @@
 
 Plataforma web educativa para clases de programación para niños. Centraliza el inicio de
 sesión por roles (admin / tutor), el panel de cursos y los entornos de práctica de cada
-curso (Python, Web Dev, y en camino Scratch, Python Pro y Minecraft).
+curso: **Python, Python Pro, Web Dev, Scratch y Minecraft**.
 
 Está pensada para **clases demostrativas**: el tutor elige el curso más afín al niño y le
 muestra, en el momento, un entorno real donde programar desde el navegador, sin instalar
@@ -12,27 +12,35 @@ nada.
 
 El proyecto tiene dos partes que se integran:
 
-- **`backend/`** — API en **Flask + SQLite**. Maneja el login, los usuarios/roles y la
-  ejecución de código Python. Es la fuente de verdad de la autenticación.
-- **`frontend/`** — Interfaz en **React (Vite)**. Es la UI activa; consume el backend.
+- **`frontend/`** — Interfaz en **React (Vite)**. Es la UI activa y donde ocurre casi todo.
+- **`backend/`** — API en **Flask + SQLite**. Su única función activa hoy es el **login**
+  (usuarios y roles).
+
+> Dato importante: el curso de Python corre **en el navegador con Pyodide**, así que la
+> ejecución de código **no depende del backend**. Lo único que la app de React necesita del
+> backend es el login.
 
 ```
 login-Kodland/
 ├── backend/
-│   ├── main.py            Rutas Flask (login, ejecución de código, vistas)
+│   ├── main.py            Rutas Flask (login + vistas legacy)
 │   ├── create_db.py       Crea leveling.db y siembra usuarios (correr 1 vez)
-│   ├── requirements.txt   Dependencias Python (Flask, requests)
+│   ├── requirements.txt   Dependencias (Flask, requests, flask-cors, gunicorn)
 │   ├── leveling.db        SQLite — tabla usuarios (usuario / password / rol)
-│   ├── static/            CSS, JS e imágenes de la UI vieja (vanilla, legacy)
+│   ├── static/            CSS/JS/imágenes de la UI vieja en HTML (legacy)
 │   └── templates/         Vistas Jinja de la UI vieja (legacy)
 ├── frontend/
 │   ├── src/
 │   │   ├── pages/         Login, Dashboard, EnConstruccion
 │   │   ├── components/    DashboardLayout, ProtectedRoute
 │   │   ├── context/       AuthContext (sesión), ThemeContext (claro/oscuro + temas)
-│   │   ├── courses/       Editores por curso (python, web) y estructura para el resto
+│   │   ├── courses/       Un curso por carpeta: python, python-pro, web, scratch, minecraft
+│   │   ├── hooks/         usePythonRunner (terminal Python interactiva)
+│   │   ├── utils/         pyodideRunner (ejecuta Python), progreso (avance por curso)
 │   │   └── styles/        Variables de tema y paletas por curso
-│   └── vite.config.js     Proxy a Flask en desarrollo
+│   ├── vite.config.js     Proxy a Flask en desarrollo
+│   ├── vercel.json        Rewrites para el routing de la SPA (deploy)
+│   └── .env.example       Documenta VITE_API_URL
 ├── .gitignore
 └── README.md
 ```
@@ -40,9 +48,9 @@ login-Kodland/
 ## Requisitos
 
 - **Python 3.11+**
-- **Node.js 18+** (para el frontend)
+- **Node.js 18+**
 
-## Cómo correr el proyecto
+## Cómo correr el proyecto (local)
 
 Hay que levantar **las dos partes a la vez**, en dos terminales.
 
@@ -68,51 +76,78 @@ npm install
 npm run dev             # abre en http://localhost:5173
 ```
 
-Entra a **http://localhost:5173**. El login habla con el backend automáticamente (Vite lo
-enruta por proxy, sin configuración extra).
+Entra a **http://localhost:5173**. En local el login habla con el backend por el proxy de
+Vite (sin configuración extra).
+
+## Los cursos (frontend React)
+
+- **Python** — editor Monaco que corre **en el navegador con Pyodide**. `input()` es
+  interactivo (se escribe en la terminal, salida en vivo). No usa el backend.
+- **Python Pro** — IDE estilo VS Code (explorer con proyectos, editor, terminal). También
+  corre con Pyodide.
+- **Web Dev** — editor HTML/CSS/JS con **vista previa en vivo** y validación de retos.
+- **Scratch** — reproductor de proyectos embebido (TurboWarp) + botón para abrir el editor
+  completo en otra pestaña. *(El editor embebido requeriría self-host — ver próximos pasos.)*
+- **Minecraft** — galería de proyectos con info y enlace a actividades reales de code.org.
+
+Además: **login** por rol, **dashboard** con menú lateral, **modo claro/oscuro** persistente
+y **paleta de color por curso**. Secciones Estudiantes / Reportes / Mensajes / Configuración:
+en construcción.
 
 ## Rutas del backend
 
 | Ruta | Método | Qué hace |
 |------|--------|----------|
-| `/login` | POST | Valida usuario/contraseña contra la BD y devuelve rol y nombre |
-| `/ejecutar` | POST | Ejecuta código Python (servicio remoto) y devuelve la salida |
-| `/`, `/dashboard`, `/python`, `/admin`, `/python_pro` | GET | Vistas HTML de la UI vieja (legacy) |
+| `/login` | POST | Valida usuario/contraseña y devuelve rol y nombre. **Lo único que usa React.** |
+| `/ejecutar` | POST | Ejecuta Python vía servicio externo (paiza). **Legacy: React ya no lo usa (usa Pyodide).** |
+| `/`, `/dashboard`, `/python`, `/admin`, `/python_pro`, `/minecraft` | GET | Vistas HTML de la UI vieja (legacy). |
 
-La app de React usa el backend **solo como API** (`/login` y `/ejecutar`). Las vistas HTML
-(`/dashboard`, `/python`, etc.) son la interfaz antigua en Jinja, que se va reemplazando
-por React.
-
-## La app de React (frontend)
-
-- **Login** conectado al backend, con sesión persistida.
-- **Dashboard** (panel del tutor) con las tarjetas de cursos y menú lateral navegable.
-- **Cursos funcionales:**
-  - **Python** — editor Monaco + ejecución de código y consola.
-  - **Web Dev** — editor HTML/CSS/JS con vista previa en vivo y validación de retos.
-- **Modo claro/oscuro** persistente y **paleta de color por curso**.
-- Secciones **Estudiantes / Reportes / Mensajes / Configuración**: en construcción.
+> Abrir la URL del backend en el navegador muestra la **UI vieja de Flask**, no la app de
+> React. La app real es el frontend (Vercel). Las vistas legacy siguen ahí por compatibilidad.
 
 ## Usuarios de prueba
 
-Los usuarios se siembran en `backend/create_db.py`. Ejemplos:
+Se siembran en `backend/create_db.py`. Ejemplos:
 
 - **Admin:** usuario `admin`, contraseña `Admin2026`.
 - **Tutor:** usuario `jrivera`, contraseña `Julian123`.
 
-> Nota de seguridad: hoy las contraseñas están en texto plano en la base de datos y en
-> `create_db.py`. Antes de un uso real hay que encriptarlas (hashing).
+> Seguridad: hoy las contraseñas están en texto plano. Antes de un uso real hay que
+> encriptarlas (hashing).
+
+## Despliegue
+
+Se despliega en dos servicios:
+
+| Parte | Servicio | Configuración |
+|-------|----------|---------------|
+| **frontend/** | **Vercel** | Root Directory: `frontend`. Env var: `VITE_API_URL` = URL del backend en Render. |
+| **backend/** | **Render** | Root Directory: `backend`. Build: `pip install -r requirements.txt && python create_db.py`. Start: `gunicorn main:app`. Sin variables de entorno. |
+
+Notas:
+- El frontend usa `VITE_API_URL` para saber a qué backend llamar en producción (en local usa
+  el proxy). Ver `frontend/.env.example`.
+- El backend tiene **CORS** habilitado para permitir las llamadas desde Vercel.
+- En Render (plan free) el backend se **duerme** tras inactividad: el primer login tarda unos
+  segundos. La BD SQLite se re-siembra en cada deploy (los usuarios de prueba siempre están).
 
 ## Trabajo en equipo
 
-Proyecto colaborativo. El backend (Flask, login, BD, ejecución de código) y el frontend
-(React) se desarrollan en paralelo sobre este mismo repo. Para actualizar: `git pull` en
-`main`, luego `pip install -r requirements.txt` (backend) y `npm install` (frontend) si
-cambiaron dependencias.
+Proyecto colaborativo sobre este mismo repo (`main`). Para actualizar:
+
+```bash
+git pull                       # traer lo del equipo
+# ...trabajar...
+git add -A && git commit -m "..."
+git push
+```
+
+Si cambiaron dependencias, `pip install -r requirements.txt` (backend) y `npm install`
+(frontend).
 
 ## Próximos pasos
 
-- Ejecución de Python 100% en el navegador (para `input()` interactivo).
-- Vista diferenciada para estudiantes.
-- Migrar los cursos de Scratch, Python Pro y Minecraft a React.
-- Encriptar contraseñas (seguridad del login).
+- **Scratch:** editor embebido de verdad (self-host de scratch-gui/TurboWarp).
+- **Vista de estudiante** (hoy tutor y estudiante ven lo mismo).
+- **Encriptar contraseñas** (hashing) y restringir CORS al dominio del frontend.
+- Guardar el avance de los cursos en el backend (hoy es local, en el navegador).
