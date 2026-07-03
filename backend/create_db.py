@@ -1,7 +1,9 @@
 import sqlite3
+import os
 
-# Crear o conectar a la base de datos
-conexion = sqlite3.connect("leveling.db")
+# Crear o conectar a la base de datos (siempre junto a este archivo, en backend/)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+conexion = sqlite3.connect(os.path.join(BASE_DIR, "leveling.db"))
 cursor = conexion.cursor()
 
 # Crear la tabla

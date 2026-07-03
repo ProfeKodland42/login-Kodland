@@ -2,12 +2,16 @@ from flask import Flask, render_template, request, jsonify
 import sqlite3
 import requests
 import time
+import os
 from flask import request, jsonify
 
 app = Flask(__name__)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
 def obtener_conexion():
-    conexion = sqlite3.connect("leveling.db")
+    conexion = sqlite3.connect(os.path.join(BASE_DIR, "leveling.db"))
     conexion.row_factory = sqlite3.Row
     return conexion
 
