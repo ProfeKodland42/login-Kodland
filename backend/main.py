@@ -1,12 +1,9 @@
-from flask import Flask, render_template, request, jsonify
-import sqlite3
-import requests
-import time
-import os
+from flask import Flask, render_template, request, jsonify, url_for
+import string, random, secrets, os, time, requests, sqlite3
 from flask import request, jsonify
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
-
 # CORS: necesario en producción para que el frontend (Vercel) pueda llamar al
 # backend (Render), que están en dominios distintos. Import seguro: si flask-cors
 # no está instalado en local, no rompe el servidor de desarrollo.
@@ -23,6 +20,78 @@ def obtener_conexion():
     conexion = sqlite3.connect(os.path.join(BASE_DIR, "leveling.db"))
     conexion.row_factory = sqlite3.Row
     return conexion
+
+def obtener_link_estudiante(codigo):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        SELECT *
+        FROM student_links
+        WHERE code = ?
+        AND active = 1
+    """, (codigo,))
+    link = cursor.fetchone()
+    conexion.close()
+    return link
+# ======================================================
+#       BORRAR ENLACES CREADOS 
+# ======================================================
+def limpiar_enlaces_expirados():
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        DELETE FROM student_links
+        WHERE datetime(created_at) <= datetime('now', '-1 hour')
+    """)
+    conexion.commit()
+    conexion.close()
+# ======================================================
+#           GENERAR CÓDIGO ÚNICO
+# ======================================================
+def generar_codigo(longitud=8):
+    caracteres = string.ascii_uppercase + string.digits
+    return "".join(random.choice(caracteres) for _ in range(longitud))
+# ======================================================
+#        GENERAR CÓDIGO PARA ESTUDIANTE
+# ======================================================
+def generar_codigo():
+    caracteres = string.ascii_uppercase + string.digits
+    while True:
+        codigo = "".join(
+            secrets.choice(caracteres)
+            for _ in range(8)
+        )
+        conexion = obtener_conexion()
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT id
+            FROM student_links
+            WHERE code = ?
+        """,(codigo,))
+        existe = cursor.fetchone()
+        conexion.close()
+        if not existe:
+            return codigo
+# ======================================================
+#       CREAR LINK DE ESTUDIANTE
+# ======================================================
+def crear_link_estudiante(modulo):
+    codigo = generar_codigo()
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        INSERT INTO student_links
+        (code,module)
+        VALUES
+        (?,?)
+    """,
+    (
+        codigo,
+        modulo
+    ))
+    conexion.commit()
+    conexion.close()
+    return codigo
 
 @app.route("/")
 def inicio():
@@ -60,9 +129,6 @@ def login():
         "rol": usuario_db["rol"],
         "nombre": usuario_db["nombre_completo"]
     })
-@app.route("/dashboard")
-def dashboard():
-    return render_template("dashboard.html")
 
 @app.route("/python")
 def python_workspace():
@@ -119,6 +185,124 @@ def python_pro():
 def minecraft():
     return render_template("minecraft.html")
 
+@app.route("/student/<codigo>")
+def student(codigo):
+    link = obtener_link_estudiante(codigo)
+    if link is None:
+        return render_template(
+            "student_error.html",
+            mensaje="Este enlace no existe o fue desactivado."
+        )
+    modulo = link["module"]
+    if modulo == "python":
+        return render_template(
+            "python_workspace.html",
+            student_mode=True
+        )
+    elif modulo == "python_pro":
+        return render_template(
+            "python_pro.html",
+            student_mode=True
+        )
+## AGREGAR MODULOS FALTANTES DE SCRATCH, DWEB, A MI NO ME APARECEN LOS CODIGOS. 
+    elif modulo == "minecraft":
+        return render_template(
+            "minecraft.html",
+            student_mode=True
+        )
+## AGREGAR MODULOS FALTANTES DE SCRATCH, DWEB, A MI NO ME APARECEN LOS CODIGOS. 
+    return render_template(
+        "student_error.html",
+        mensaje="Módulo no encontrado."
+    )
 
+@app.route("/dashboard")
+def dashboard():
+    return render_template(
+        "dashboard.html",
+        student_generator=False
+    )
+@app.route("/students")
+def students():
+    return render_template(
+        "dashboard.html",
+        student_generator=True
+    )
+# ======================================================
+#      GENERAR ENLACE PARA ESTUDIANTE
+# ======================================================
+@app.route("/generate_student_link", methods=["POST"])
+def generate_student_link():
+    datos = request.get_json()
+    modulo = datos.get("module")
+    if modulo not in [
+        "python",
+        "python_pro",
+        "minecraft"
+        ## AGREGAR MODULOS FALTANTES DE SCRATCH, DWEB, A MI NO ME APARECEN LOS CODIGOS. 
+    ]:
+        return jsonify({
+            "success":False,
+            "message":"Módulo inválido."
+        })
+    codigo = crear_link_estudiante(modulo)
+    return jsonify({
+        "success":True,
+        "url":request.host_url.rstrip("/")
+              + "/student/"
+              + codigo
+    })
+# ======================================================
+#           GENERAR ENLACE ESTUDIANTE
+# ======================================================
+# ======================================================
+#           GENERAR ENLACE ESTUDIANTE
+# ======================================================
+@app.route("/generate_link", methods=["POST"])
+def generate_link():
+    datos = request.get_json()
+    modulo = datos.get("module")
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    # ----------------------------------
+    # Eliminar enlaces de más de 1 hora
+    # ----------------------------------
+    cursor.execute("""
+        DELETE FROM student_links
+        WHERE datetime(created_at)
+        <= datetime('now','-1 hour')
+    """)
+    # ----------------------------------
+    # Generar código único
+    # ----------------------------------
+    while True:
+        codigo = generar_codigo()
+        cursor.execute("""
+            SELECT id
+            FROM student_links
+            WHERE code=?
+        """,(codigo,))
+        if cursor.fetchone() is None:
+            break
+    # ----------------------------------
+    # Guardar
+    # ----------------------------------
+    cursor.execute("""
+        INSERT INTO student_links
+        ( code,module)
+        VALUES
+        (?,?)
+    """,(codigo,modulo))
+    conexion.commit()
+    conexion.close()
+    enlace = request.host_url.rstrip("/") + url_for(
+        "student",
+        codigo=codigo
+    )
+    return jsonify({
+        "success":True,
+        "code":codigo,
+        "link":enlace
+    })
 if __name__ == "__main__":
     app.run(debug=True)

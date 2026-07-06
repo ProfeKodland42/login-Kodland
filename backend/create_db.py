@@ -1,31 +1,52 @@
 import sqlite3
 import os
-
-# Crear o conectar a la base de datos (siempre junto a este archivo, en backend/)
+# ======================================================
+#           TUTOR'S LEVELING DATABASE
+# ======================================================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-conexion = sqlite3.connect(os.path.join(BASE_DIR, "leveling.db"))
+conexion = sqlite3.connect(
+    os.path.join(BASE_DIR, "leveling.db")
+)
 cursor = conexion.cursor()
-
-# Crear la tabla
+# ======================================================
+#                   USUARIOS
+# ======================================================
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre_completo TEXT NOT NULL,
     usuario TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    rol TEXT DEFAULT 'tutor'
+    rol TEXT DEFAULT 'tutor',
+    ultimo_login TIMESTAMP
 )
 """)
-
-# Usuario administrador
+# ======================================================
+#          ENLACES PARA ESTUDIANTES
+# ======================================================
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS student_links (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    code TEXT UNIQUE NOT NULL,
+    module TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP,
+    views INTEGER DEFAULT 0,
+    active INTEGER DEFAULT 1
+)
+""")
+# ======================================================
+#               ADMINISTRADOR
+# ======================================================
 cursor.execute("""
 INSERT OR IGNORE INTO usuarios
 (nombre_completo, usuario, password, rol)
 VALUES
-('Administrador', 'admin', 'Admin2026', 'admin')
+('Administrador','admin','Admin2026','admin')
 """)
-
-# Lista de tutores
+# ======================================================
+#                  TUTORES
+# ======================================================
 usuarios = [
     ("Jonathan Camilo Burbano Pazos","jburbano","Jonathan123","tutor"),
     ("Myle Urdaneta Cordoba","murdaneta","Myle123","tutor"),
@@ -77,14 +98,17 @@ usuarios = [
     ("Michell Alvarado","malvarado","Michell123","tutor"),
     ("Victor Hugo Lagos Pantoja","vlagos","Victor123","tutor")
 ]
-
 cursor.executemany("""
 INSERT OR IGNORE INTO usuarios
 (nombre_completo, usuario, password, rol)
 VALUES (?, ?, ?, ?)
 """, usuarios)
-
 conexion.commit()
 conexion.close()
-
-print("Base de datos creada correctamente.")
+print("======================================")
+print(" Tutor's Leveling")
+print("======================================")
+print("✔ Base de datos creada correctamente.")
+print("✔ Usuarios cargados.")
+print("✔ Tabla 'student_links' creada.")
+print("======================================")

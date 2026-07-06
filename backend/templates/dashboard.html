@@ -32,7 +32,7 @@
                 <i class="bi bi-book"></i>
                 Cursos
             </a>
-            <a href="#">
+           <a href="{{ url_for('students') }}">
                 <i class="bi bi-people"></i>
                 Estudiantes
             </a>
@@ -114,7 +114,6 @@
                 Calificaciones
             </a>
         </section>
-
         <!--========================
             TARJETAS
         =========================-->
@@ -133,9 +132,15 @@
                     <span>12 módulos</span>
                     <span>60%</span>
                 </div>
+                {% if student_generator %}
+                <button class="generate-link" data-module="python">
+                    🔗 Generar enlace
+                </button>
+                {% else %}
                 <button onclick="window.location.href='/python'">
                     Abrir Workspace
                 </button>
+                {% endif %}
             </div>
             <!-- Card -->
             <div class="card">
@@ -169,9 +174,15 @@
                     <span>15 módulos</span>
                     <span>25%</span>
                 </div>
+                {% if student_generator %}
+                <button class="generate-link" data-module="python_pro">
+                    🔗 Generar enlace
+                </button>
+                {% else %}
                 <button onclick="window.location.href='/python_pro'">
                     Abrir Workspace
                 </button>
+                {% endif %}
             </div>
             <!-- Card -->
             <div class="card">
@@ -187,13 +198,36 @@
                     <span>7 módulos</span>
                     <span>10%</span>
                 </div>
+                {% if student_generator %}
+                <button class="generate-link" data-module="minecraft">
+                    🔗 Generar enlace
+                </button>
+                {% else %}
                 <button onclick="window.location.href='/minecraft'">
                     Abrir Workspace
                 </button>
+                {% endif %}
             </div>
         </section>
     </main>
 </div>
+<div id="link-modal" class="modal">
+    <div class="modal-content">
+        <h3>Enlace generado</h3>
+        <input id="generated-link" readonly>
+        <div class="modal-buttons">
+            <button id="copy-link">
+                Copiar
+            </button>
+            <button id="close-modal">
+                Cerrar
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    const STUDENT_MODE = {{ student_generator | tojson }};
+</script>
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </body>
 </html>
