@@ -9,7 +9,7 @@ function extraerId(texto) {
   return encontrado ? encontrado[1] : ''
 }
 
-export default function ScratchCourse() {
+export default function ScratchCourse({ studentMode }) {
   const [entrada, setEntrada] = useState('')
   const [projectId, setProjectId] = useState('')
 
@@ -54,9 +54,11 @@ export default function ScratchCourse() {
           >
             <i className="bi bi-box-arrow-up-right"></i> Crear (editor)
           </a>
-          <Link to="/dashboard" className={styles.volver}>
-            <i className="bi bi-arrow-left"></i> Volver
-          </Link>
+          {!studentMode && (
+            <Link to="/dashboard" className={styles.volver}>
+              <i className="bi bi-arrow-left"></i> Volver
+            </Link>
+          )}
         </div>
       </header>
 

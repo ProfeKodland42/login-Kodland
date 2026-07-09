@@ -1,0 +1,27 @@
+.centro {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  padding: 24px;
+  background: #0c1024;
+  color: #e7ebf7;
+  font-family: 'Poppins', sans-serif;
+}
+
+.centro i {
+  font-size: 64px;
+  color: #4d6bff;
+}
+
+.centro h2 {
+  font-size: 26px;
+}
+
+.centro p {
+  color: #9aa4b0;
+  max-width: 420px;
+}

@@ -216,6 +216,14 @@ def student(codigo):
         mensaje="Módulo no encontrado."
     )
 
+# JSON para el frontend React: dado un código, devuelve el módulo del enlace.
+@app.route("/student_link/<codigo>")
+def student_link(codigo):
+    link = obtener_link_estudiante(codigo)
+    if link is None:
+        return jsonify({"success": False, "message": "Enlace inválido o expirado."})
+    return jsonify({"success": True, "module": link["module"]})
+
 @app.route("/dashboard")
 def dashboard():
     return render_template(

@@ -38,7 +38,7 @@ const codigoInicial = Object.fromEntries(
 
 const menu = ['Archivo', 'Editar', 'Ver', 'Ejecutar', 'Terminal', 'Ayuda']
 
-export default function PythonPro() {
+export default function PythonPro({ studentMode }) {
   const [valores, setValores] = useState(codigoInicial)
   const [actual, setActual] = useState('calculator')
   const [abiertos, setAbiertos] = useState(['calculator'])
@@ -90,9 +90,11 @@ export default function PythonPro() {
             <span className={styles.liveDot}></span>
             {estado}
           </div>
-          <Link to="/dashboard" className={styles.volver}>
-            <i className="bi bi-arrow-left"></i> Volver
-          </Link>
+          {!studentMode && (
+            <Link to="/dashboard" className={styles.volver}>
+              <i className="bi bi-arrow-left"></i> Volver
+            </Link>
+          )}
         </div>
       </header>
 

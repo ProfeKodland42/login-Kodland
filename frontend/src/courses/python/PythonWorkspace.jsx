@@ -45,7 +45,7 @@ const codigoInicial = Object.fromEntries(
   ejercicios.map((e) => [e.archivo, e.codigo])
 )
 
-export default function PythonWorkspace() {
+export default function PythonWorkspace({ studentMode }) {
   const [archivos, setArchivos] = useState(codigoInicial)
   const [archivoActual, setArchivoActual] = useState('main.py')
   const {
@@ -91,9 +91,11 @@ export default function PythonWorkspace() {
             <i className="bi bi-play-fill"></i>
             {ejecutando ? ' Ejecutando...' : ' Ejecutar código'}
           </button>
-          <Link to="/dashboard" className={styles.volver}>
-            <i className="bi bi-arrow-left"></i> Volver
-          </Link>
+          {!studentMode && (
+            <Link to="/dashboard" className={styles.volver}>
+              <i className="bi bi-arrow-left"></i> Volver
+            </Link>
+          )}
         </div>
       </header>
 

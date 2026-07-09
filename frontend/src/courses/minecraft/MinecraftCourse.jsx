@@ -54,7 +54,7 @@ const proyectos = {
 
 }
 
-export default function MinecraftCourse() {
+export default function MinecraftCourse({ studentMode }) {
   const [actual, setActual] = useState('house')
   const data = proyectos[actual]
 
@@ -71,9 +71,11 @@ export default function MinecraftCourse() {
           <span>Education</span>
           <span>Help</span>
         </nav>
-        <Link to="/dashboard" className={styles.back}>
-          <i className="bi bi-arrow-left"></i> Volver
-        </Link>
+        {!studentMode && (
+          <Link to="/dashboard" className={styles.back}>
+            <i className="bi bi-arrow-left"></i> Volver
+          </Link>
+        )}
       </header>
 
       <main className={styles.workspace}>

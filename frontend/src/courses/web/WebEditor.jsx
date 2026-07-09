@@ -57,7 +57,7 @@ ${archivos.html}
 </html>`
 }
 
-export default function WebEditor() {
+export default function WebEditor({ studentMode }) {
   const [archivos, setArchivos] = useState(archivosIniciales)
   const [archivoActual, setArchivoActual] = useState('html')
 
@@ -120,9 +120,11 @@ export default function WebEditor() {
         </div>
 
         <div className={styles.toolbarRight}>
-          <Link to="/dashboard" className={styles.volver}>
-            <i className="bi bi-arrow-left"></i> Volver
-          </Link>
+          {!studentMode && (
+            <Link to="/dashboard" className={styles.volver}>
+              <i className="bi bi-arrow-left"></i> Volver
+            </Link>
+          )}
           <button onClick={vistaPrevia}>Vista previa</button>
           <button onClick={reiniciar}>Reiniciar</button>
         </div>

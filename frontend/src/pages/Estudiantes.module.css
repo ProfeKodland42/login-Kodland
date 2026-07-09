@@ -1,0 +1,87 @@
+.panel {
+  margin-top: 30px;
+  max-width: 640px;
+  padding: 28px;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.panel h3 {
+  color: var(--text);
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.ayuda {
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.controles {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.controles select {
+  flex: 1;
+  min-width: 180px;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+}
+
+.controles button {
+  height: 44px;
+  padding: 0 22px;
+  border: none;
+  border-radius: 10px;
+  background: var(--brand);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.controles button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.error {
+  margin-top: 14px;
+  color: var(--danger);
+}
+
+.resultado {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.resultado input {
+  flex: 1;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.resultado button {
+  height: 44px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 10px;
+  background: var(--course-primary, var(--brand));
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}

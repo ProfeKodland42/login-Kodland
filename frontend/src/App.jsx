@@ -4,6 +4,8 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import EnConstruccion from './pages/EnConstruccion'
+import Estudiantes from './pages/Estudiantes'
+import StudentView from './pages/StudentView'
 import CursoPlaceholder from './pages/CursoPlaceholder'
 import PythonWorkspace from './courses/python/PythonWorkspace'
 import PythonPro from './courses/python-pro/PythonPro'
@@ -29,8 +31,9 @@ export default function App() {
         <Route path="/dashboard" element={<Protegida><Dashboard /></Protegida>} />
         <Route
           path="/estudiantes"
-          element={<Protegida><EnConstruccion seccion="Estudiantes" /></Protegida>}
+          element={<Protegida><Estudiantes /></Protegida>}
         />
+        <Route path="/student/:codigo" element={<StudentView />} />
         <Route
           path="/reportes"
           element={<Protegida><EnConstruccion seccion="Reportes" /></Protegida>}
